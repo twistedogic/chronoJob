@@ -9,7 +9,7 @@ m <- month(endDate)
 y <- year(endDate) - 3
 startDate <- paste(y,m,d,sep="-")
 startDate <- as.Date(startDate)
-tickers <- getSymbols(stockId, from = startDate, to = endDate, auto.assign = TRUE)
+tickers <- getSymbols(stockId, from = startDate, to = endDate)
 dataset <- get(tickers[1])
 for (i in 2:length(tickers)) {
     dataset <- merge(dataset, get(tickers[i]))
