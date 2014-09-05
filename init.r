@@ -9,4 +9,4 @@ install.packages('http://cran.r-project.org/src/contrib/Archive/fPortfolio/fPort
 
 library(devtools)
 install_github('financeR', user='rhochreiter')
-install.packages('shiny', repos='http://cran.rstudio.com/')
+install.packages('rredis', repos='http://cran.rstudio.com/')
