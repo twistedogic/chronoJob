@@ -13,9 +13,17 @@ startDate <- as.Date(startDate)
 getSymbols(stockId,from = startDate, to = endDate)
 for (i in 2:length(stockId)){
   stock <- stockId[i]
-  rsi<-RSI(Cl(get(stockId[i])),n = 14,maType='SMA') 
+  rsi<-RSI(Cl(get(stockId[i])),n = 14,maType='SMA')
+  stockName<-stockId[i]
+  rsi<-as.vector(last(rsi))
   rsiBuy <- last(rsi) <= 35
   rsiSell <- last(rsi) >= 70
+  if(rsiBuy == TRUE){
+    
+  }
+  if(rsiSell == TRUE){
+    
+  }
 }
 
 for (i in 2:length(stockId)){
