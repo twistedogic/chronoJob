@@ -3,7 +3,7 @@ library(lubridate)
 library(TTR)
 library(rredis)
 # parameters
-allStock <- read.csv(file='fullList',sep='_',header=FALSE)
+allStock <- read.csv(file='chronoJob/bluechip',sep='_',header=FALSE)
 stockId <- as.vector(allStock$V1)
 endDate <- Sys.Date()
 d <- day(endDate)

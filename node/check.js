@@ -7,44 +7,23 @@ var stockIds = [];
 for (var i = 0; i < lines.length; i++){
   stockIds.push(lines[i].split('_')[0]);
 }
-// for (var i = 0; i < stockIds.length; i++){
-//     var url = 'http://ichart.finance.yahoo.com/table.csv?' + querystring.stringify({
-//       s: stockIds[i],
-//       g: 'd',
-//       ignore: '.csv'
-//     });
+for (var i = 0; i < stockIds.length; i++){
+    var url = 'http://ichart.finance.yahoo.com/table.csv?' + querystring.stringify({
+      s: stockIds[i],
+      g: 'd',
+      ignore: '.csv'
+    });
 
-//     request({
-//       url: url
-//     }, function (err, res, body) {
-//       if (err) { return cb(err); }
-//       switch (res.statusCode) {
-//       case 200:
-//         console.log(res.statusCode);
-//       case 404:
-//         console.log(res.statusCode);
-//       break;
-//       default:
-//         console.log('ERROR');
-//       }
-//     });
-// }
-var url = 'http://ichart.finance.yahoo.com/table.csv?' + querystring.stringify({
-    s: '0030.HK',
-    g: 'd',
-    ignore: '.csv'
-  });
-  request({
-    url: url
-  }, function (err, res, body) {
-    if (err) { return cb(err); }
-    switch (res.statusCode) {
-    case 200:
-      console.log(res.request.path);
-    case 404:
-      console.log(res.statusCode);
-    break;
-    default:
-      console.log('ERROR');
-    }
-  })
+    request({
+      url: url
+    }, function (err, res, body) {
+      if (err) { return cb(err); }
+      var fileName = res.request.path;
+      fileName = fileName.split('=')[1].split('&')[0];
+      if (res.statusCode == 200){
+        // console.log('200');
+      } else {
+        console.log(fileName);
+      }
+    });
+  }

@@ -12,5 +12,4 @@ for (i in 2:length(stockId)){
   cross50250 <- sma50 - sma250
   cross100150 <- sma100 - sma150
   cross100250 <- sma100 - sma250
-
 }
