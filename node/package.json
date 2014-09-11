@@ -12,7 +12,6 @@
     "lodash": "^2.4.1",
     "moment": "^2.8.3",
     "querystring": "^0.2.0",
-    "request": "^2.42.0",
-    "yahoo-finance": "^0.1.4"
+    "request": "^2.42.0"
   }
 }

@@ -1,26 +1,30 @@
 var fs = require('fs');
-var util = require('util');
-var _ = require('lodash');
-var yahooFinance = require('yahoo-finance');
-
-var startDate = moment().subtract(5, 'days').format('YYYY-MM-DD');
-var endDate = moment().format('YYYY-MM-DD');
-
-var allStock = fs.readFileSync('../fullList','utf8');
+var querystring = require('querystring');
+var request = require('request');
+var allStock = fs.readFileSync('../bluechip','utf8');
 var lines = allStock.split('\n');
 var stockIds = [];
-for (var i = 0; i < lines.length; i++){
-	stockIds.push(lines[i].split('_')[0]);
-}
 
-yahooFinance.historical({
-	symbols: stockIds,
-	from: startDate,
-	//to: endDate,
-	period: 'd'
-}, function (err, results) {
-	if (err) { throw err; }
-	_.each(results, function (result) {
-		console.log(result.url);
-	});
-});
+for (var i = 0; i < lines.length; i++){
+  stockIds.push(lines[i].split('_')[0]);
+}
+for (var i = 0; i < stockIds.length; i++){
+    var url = 'http://ichart.finance.yahoo.com/table.csv?' + querystring.stringify({
+      s: stockIds[i],
+      g: 'd',
+      ignore: '.csv'
+    });
+
+    request({
+      url: url
+    }, function (err, res, body) {
+      if (err) { return cb(err); }
+      var fileName = res.request.path;
+      fileName = fileName.split('=')[1].split('&')[0];
+      if (res.statusCode == 200){
+        fs.writeFileSync(__dirname + '/dataset/' + fileName + '.csv', body);
+      } else {
+        console.log('fail to download'+fileName);
+      }
+    });
+  }
