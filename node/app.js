@@ -22,9 +22,12 @@ for (var i = 0; i < stockIds.length; i++){
       var fileName = res.request.path;
       fileName = fileName.split('=')[1].split('&')[0];
       if (res.statusCode == 200){
+        var lookup = 'setSymbolLookup(`' + fileName + '`=list(src="csv",format="%Y-%m-%d"))' + '\n';
         fs.writeFileSync(__dirname + '/dataset/' + fileName + '.csv', body);
+        fs.appendFileSync(__dirname + '/lookupTable.r', lookup);
       } else {
         console.log('fail to download'+fileName);
       }
     });
   }
+console.log("Done");
