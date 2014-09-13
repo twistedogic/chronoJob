@@ -1,7 +1,7 @@
 buyList <- character()
 sellList <- character()
 allRSI <- character()
-for (i in 2:length(stockId)){
+for (i in 1:length(stockId)){
   stock <- stockId[i]
   rsi<-RSI(Cl(get(stock)))
   rsi<-as.vector(last(rsi))
