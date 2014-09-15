@@ -30,4 +30,4 @@ for (var i = 0; i < stockIds.length; i++){
       }
     });
   }
-console.log("Done");
+  console.log('Scraping...');
