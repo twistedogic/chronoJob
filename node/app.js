@@ -1,7 +1,7 @@
 var fs = require('fs');
 var querystring = require('querystring');
 var request = require('request');
-var allStock = fs.readFileSync('../bluechip','utf8');
+var allStock = fs.readFileSync('../fullList','utf8');
 var lines = allStock.split('\n');
 var stockIds = [];
 

@@ -1,0 +1,5 @@
+write.csv(buyList,sep=',',file='chronoJob/buyrsi.csv')
+write.csv(sellList,sep=',',file='chronoJob/sellrsi.csv')
+write.csv(smaBuyList,sep=',',file='chronoJob/buysma.csv')
+write.csv(smaSellList,sep=',',file='chronoJob/sellsma.csv')
+write.csv(allRSI,sep=',',file='chronoJob/allrsi.csv')
