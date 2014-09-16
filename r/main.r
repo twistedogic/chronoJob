@@ -1,12 +1,9 @@
-library(quantmod)
-library(lubridate)
-library(TTR)
-library(rredis)
-# parameters
-allStock <- read.csv(file='chronoJob/bluechip',sep='_',header=FALSE)
-stockId <- as.vector(allStock$V1)
-source('chronoJob/r/ETL.r')
-source('chronoJob/r/filter.r')
-source('chronoJob/r/rsi.r')
-source('chronoJob/r/sma.r')
-source('chronoJob/r/export.r')
+path <- getwd()
+if (require('quantmod') == FALSE){
+    source(paste(path,'/r/init.r',sep=''))
+}
+source(paste(path,'/r/ETL.r',sep=''))
+source(paste(path,'/r/filter.r',sep=''))
+source(paste(path,'/r/rsi.r',sep=''))
+source(paste(path,'/r/sma.r',sep=''))
+source(paste(path,'/r/export.r',sep=''))

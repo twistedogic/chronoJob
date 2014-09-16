@@ -10,11 +10,11 @@ m <- month(endDate)
 y <- year(endDate) - 2
 startDate <- paste(y,m,d,sep="-")
 startDate <- as.Date(startDate)
-source('chronoJob/node/lookupTable.r')
-setwd('/home/myworkspace/chronoJob/node/dataset/')
+source(paste(path,'/node/lookupTable.r',sep=''))
+setwd(paste(path,'/node/dataset/',sep=''))
 stockId <- list.files(path='.')
 for (i in 1:length(stockId)){
 stockId[i] <- file_path_sans_ext(stockId[i])
 }
 getSymbols(stockId)
-setwd('/home/myworkspace/')
+setwd(path)
