@@ -1,6 +1,8 @@
 var fs = require('fs');
 var querystring = require('querystring');
 var request = require('request');
+var moment = require("moment");
+var time = moment().zone('+0800').format("YYYY-MM-DD");
 var allStock = fs.readFileSync('../fullList','utf8');
 var lines = allStock.split('\n');
 var stockIds = [];
@@ -11,6 +13,9 @@ for (var i = 0; i < lines.length; i++){
 for (var i = 0; i < stockIds.length; i++){
     var url = 'http://ichart.finance.yahoo.com/table.csv?' + querystring.stringify({
       s: stockIds[i],
+      d: time.split('-')[1] - 1,
+      e: time.split('-')[2],
+      f: time.split('-')[0],
       g: 'd',
       ignore: '.csv'
     });
