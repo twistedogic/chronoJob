@@ -1,4 +1,5 @@
-path <- getwd()
+path <- paste(getwd())
+#path <- paste(getwd(),'/chronoJob',sep='')
 if (require('quantmod') == FALSE){
     source(paste(path,'/r/modules/init.r',sep=''))
 }

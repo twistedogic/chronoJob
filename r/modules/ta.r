@@ -11,6 +11,7 @@ for (i in 1:length(stockId)){
   macd <- as.vector(last(MACD(CL, nFast = 12, nSlow = 26, nSig = 9))) #macd,macdSignal
   bbands <- as.vector(last(BBands(HLC))) #Lower,Middle,Upper,ptcB
   result <- rbind(result,c(stock,price,rsi,sto,smi,macd,bbands))
+  print(i)
 }
 ta <- c('symbol','close','rsi','FastK','FastD','SlowD','smi','smiSignal','macd','macdSignal','Lower','Middle','Upper','ptcB')
 colnames(result) <- ta
