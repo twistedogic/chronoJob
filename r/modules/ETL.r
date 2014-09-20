@@ -16,5 +16,5 @@ stockId <- list.files(path='.')
 for (i in 1:length(stockId)){
 stockId[i] <- file_path_sans_ext(stockId[i])
 }
-getSymbols(stockId)
+getSymbols(stockId,return.class='data.frame')
 setwd(path)
