@@ -16,5 +16,6 @@ stockId <- list.files(path='.')
 for (i in 1:length(stockId)){
 stockId[i] <- file_path_sans_ext(stockId[i])
 }
-getSymbols(stockId,return.class='data.frame')
+getSymbols(stockId)
 setwd(path)
+print('ETL Complete')

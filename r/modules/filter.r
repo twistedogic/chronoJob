@@ -15,3 +15,4 @@ for (i in 1:length(stockId)){
     }
 }
 stockId <- newstockId
+print('Filter Complete')
