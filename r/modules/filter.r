@@ -6,7 +6,7 @@ for (i in 1:length(stockId)){
         active <- as.vector(ROC(Cl(get(stockId[i]))))
         active <- length(active[active==0])
         active <- round(active/total*100)
-        price <- last(Cl(get(stockId[i]))
+        price <- last(Cl(get(stockId[i])))
         # HL <- as.vector(last(HLC(get(stockId[i]))))[1] != as.vector(last(HLC(get(stockId[i]))))[2]
         volume <- as.vector(last(get(stockId[i])[,5],n=300))
         volume <- length(volume[volume=='0'])
