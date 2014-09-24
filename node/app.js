@@ -3,13 +3,27 @@ var querystring = require('querystring');
 var request = require('request');
 var moment = require("moment");
 var time = moment().zone('+0800').format("YYYY-MM-DD");
-var allStock = fs.readFileSync('../fullList','utf8');
-var lines = allStock.split('\n');
+// var allStock = fs.readFileSync('../fullList','utf8');
+// var lines = allStock.split('\n');
 var stockIds = [];
 
-for (var i = 0; i < lines.length; i++){
-  stockIds.push(lines[i].split('_')[0]);
+// for (var i = 0; i < lines.length; i++){
+//   stockIds.push(lines[i].split('_')[0]);
+// }
+function pad(n, width, z) {
+  z = z || '0';
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
+
+for (var i = 0; i < 9999; i++){
+  var temp = [];
+  temp.push(pad(i,4));
+  temp.push('HK');
+  temp = temp.join('.');
+  stockIds.push(temp);
+}
+
 for (var i = 0; i < stockIds.length; i++){
     var url = 'http://ichart.finance.yahoo.com/table.csv?' + querystring.stringify({
       s: stockIds[i],
@@ -31,7 +45,7 @@ for (var i = 0; i < stockIds.length; i++){
         fs.writeFileSync(__dirname + '/dataset/' + fileName + '.csv', body);
         fs.appendFileSync(__dirname + '/lookupTable.r', lookup);
       } else {
-        console.log('fail to download'+fileName);
+        console.log('fail to download '+fileName);
       }
     });
   }
