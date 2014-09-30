@@ -1,73 +1,6 @@
 result <- character()
 maxminResult <- character()
 print('Analyzing...')
-title <- c('Open','High','Low','Close','Volume','Adjusted','change','rsi','FastK','FastD','SlowD','smi','smiSignal','macd','macdSignal','Lower','Middle','Upper','ptcB','sma10','sma20','sma50','sma100','sma150','sma250')
-for (i in 1:length(stockId)){
-  stock <- stockId[i]
-  data <- get(stock)
-  tatitle <- c('Open','High','Low','Close','Volume','Adjusted')
-  CL <- Cl(data)
-  HLC <- HLC(data)
-  HL <- data[,c(2,3)]
-  V <- data[,5]
-  change <- ROC(CL) #change
-  tatitle <- c(tatitle,c('change'))
-  rsi <- RSI(CL) #rsi
-  tatitle <- c(tatitle,c('rsi'))
-  sto <- stoch(HLC, nFastK = 14, nFastD = 3, nSlowD = 3, maType = 'EMA') * 100 #FastK,FastD,SlowD
-  tatitle <- c(tatitle,names(sto))
-  smi <- SMI(HLC, n = 13, nFast = 2, nSlow = 25, nSig = 9) #smi,smiSignal
-  tatitle <- c(tatitle,c('smi','smiSignal'))
-  macd <- MACD(CL, nFast = 12, nSlow = 26, nSig = 9) * 100 #macd,macdSignal
-  tatitle <- c(tatitle,c('macd','macdSignal'))
-  bbands <- BBands(HLC) #Lower,Middle,Upper,ptcB
-  tatitle <- c(tatitle,c('Lower','Middle','Upper','ptcB'))
-  atr <- ATR(HLC)
-  tatitle <- c(tatitle,names(atr))
-  cV <- chaikinVolatility(HL)
-  tatitle <- c(tatitle,c('cV'))
-  tdi <- TDI(CL)
-  tatitle <- c(tatitle,names(tdi))
-  adx <- ADX(HLC)
-  tatitle <- c(tatitle,names(adx))
-  mfi <- MFI(HLC,V)
-  tatitle <- c(tatitle,names(mfi))
-  obv <- OBV(CL,V)
-  tatitle <- c(tatitle,names(obv))
-  sar <- SAR(HL)
-  tatitle <- c(tatitle,c('sar'))
-  sma10 <-SMA(CL,n = 10)
-  tatitle <- c(tatitle,c('sma10'))
-  sma20 <-SMA(CL,n = 20)
-  tatitle <- c(tatitle,c('sma20'))
-  sma50 <-SMA(CL,n = 50)
-  tatitle <- c(tatitle,c('sma50'))
-  sma100 <-SMA(CL,n = 100)
-  tatitle <- c(tatitle,c('sma100'))
-  sma150 <-SMA(CL,n = 150)
-  tatitle <- c(tatitle,c('sma150'))
-  sma250 <-SMA(CL,n = 250)
-  tatitle <- c(tatitle,c('sma250'))
-  data <- cbind(data,change,rsi,sto,smi,macd,bbands,sma10,sma20,sma50,sma100,sma150,sma250)
-  colnames(data) <- tatitle
-  assign(stock,data)
-  day <- c(250,100,50)
-  maxmin <- character()
-  for (j in day){
-    data <- last(data,n=j)
-    maxmin <- cbind(maxmin,as.vector(max(data[,2])),as.vector(min(data[,3])),as.vector(mean(data[,4])))
-  }
-  maxminResult <- rbind(maxminResult,maxmin)
-  result <- rbind(result,c(stock,as.vector(last(data))))
-}
-colnames(maxminResult) <- c('250max','250min','250mean','100max','100min','100mean','50max','50min','50mean')
-ta <- c('Symbol',tatitle)
-colnames(result) <- ta
-result <- cbind(result,maxminResult)
-result <- character()
-maxminResult <- character()
-print('Analyzing...')
-title <- c('Open','High','Low','Close','Volume','Adjusted','change','rsi','FastK','FastD','SlowD','smi','smiSignal','macd','macdSignal','Lower','Middle','Upper','ptcB','sma10','sma20','sma50','sma100','sma150','sma250')
 for (i in 1:length(stockId)){
   stock <- stockId[i]
   data <- get(stock)
@@ -126,7 +59,7 @@ for (i in 1:length(stockId)){
   maxminResult <- rbind(maxminResult,maxmin)
   result <- rbind(result,c(stock,as.vector(last(data))))
 }
-colnames(maxminResult) <- c('250max','250min','250mean','100max','100min','100mean','50max','50min','50mean')
+tatitle <- c(tatitle,'250max','250min','250mean','100max','100min','100mean','50max','50min','50mean')
 ta <- c('Symbol',tatitle)
-colnames(result) <- ta
 result <- cbind(result,maxminResult)
+colnames(result) <- ta
