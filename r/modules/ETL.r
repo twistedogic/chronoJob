@@ -1,7 +1,6 @@
 library(quantmod)
 library(lubridate)
 library(TTR)
-library(rredis)
 library(tools)
 # parameters
 endDate <- Sys.Date()
