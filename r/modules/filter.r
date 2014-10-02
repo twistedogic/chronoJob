@@ -9,8 +9,8 @@ for (i in 1:length(stockId)){
         inactive <- length(active[active==0])
         active <- round(inactive/total*100)
         price <- last(Cl(get(stockId[i])))
-        HL <- as.vector(last(HLC(get(stockId[i]))))[1] != as.vector(last(HLC(get(stockId[i]))))[2]
-        if (active < 25 && HL){
+        #HL <- as.vector(last(HLC(get(stockId[i]))))[1] != as.vector(last(HLC(get(stockId[i]))))[2]
+        if (active < 25){
             newstockId <- c(newstockId,stockId[i])
         }
     }

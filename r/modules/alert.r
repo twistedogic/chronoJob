@@ -22,7 +22,3 @@ for (i in 1:nrow(result)){
     bbBuy <- rbind(bbBuy,c(symbol,price,bb))
   }
 }
-colnames(rsiBuy)<-c('symbol','price','rsi')
-colnames(rsiSell)<-c('symbol','price','rsi')
-colnames(bbBuy)<-c('symbol','price','%B')
-colnames(bbSell)<-c('symbol','price','%B')
