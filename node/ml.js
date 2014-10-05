@@ -1,17 +1,18 @@
 var brain = require('brain');
-var net = new brain.NeuralNetwork({hiddenLayers: [46,40,30]});
-// var net = new brain.NeuralNetwork();
+var net = new brain.NeuralNetwork();
 var fs = require('fs');
-var data = fs.readFileSync('../report/results/0001.HK.csv','utf8');
+var data = fs.readFileSync('../report/indicators/0001.HKindicator.csv','utf8');
 data = data.split('\n');
 data.pop();
 var training_data = [];
 var test_data = [];
-for (var i = 1; i < data.length; i++){
+for (var i = 1; i < data.length - 11; i++){
     var line = data[i].split(',');
+    var result = data[i+10].split(',')[line.length-1];
+    line.pop();
     var temp = {
-    	input: [line[0],line[1],line[2],line[3],line[4],line[5],line[6],line[7],line[8],line[9],line[10],line[11],line[12],line[13],line[14],line[15],line[16],line[17],line[18],line[19],line[20],line[21],line[22],line[23],line[24],line[25],line[26],line[27],line[28],line[29],line[30],line[31],line[32],line[33],line[34],line[35],line[36],line[37],line[38],line[39],line[41],line[42],line[43],line[44],line[45]],
-    	output: [line[40]]
+    	input: line,
+    	output: [result]
     };
 	if (i < 300){
 	    training_data.push(temp);
@@ -20,6 +21,7 @@ for (var i = 1; i < data.length; i++){
 	}
 	
 }
+console.log(training_data);
 net.train(training_data,{
   errorThresh: 0.01,  // error threshold to reach
   iterations: 2000000,   // maximum training iterations

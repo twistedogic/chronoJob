@@ -49,7 +49,7 @@ for (i in 1:length(stockId)){
   tatitle <- c(tatitle,c('sma250'))
   roc5 <-SMA(change,n = 5)
   tatitle <- c(tatitle,c('roc5'))
-  roc10 <-SMA(change,n = 10) > 0
+  roc10 <-SMA(change,n = 10)
   tatitle <- c(tatitle,c('roc10'))
   roc20 <-SMA(change,n = 20)
   tatitle <- c(tatitle,c('roc20'))
