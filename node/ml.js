@@ -6,7 +6,7 @@ data = data.split('\n');
 data.pop();
 var training_data = [];
 var test_data = [];
-for (var i = 1; i < data.length - 11; i++){
+for (var i = 251; i < data.length - 11; i++){
     var line = data[i].split(',');
     var result = data[i+10].split(',')[line.length-1];
     line.pop();

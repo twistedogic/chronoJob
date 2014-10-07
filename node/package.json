@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "brain": "^0.7.0",
+    "cheerio": "^0.17.0",
     "convnetjs": "^0.3.0",
     "decision-tree": "^0.3.0",
     "learningjs": "^0.1.2",
