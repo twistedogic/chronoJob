@@ -14,25 +14,24 @@ for (var i = 0; i < stockIds.length; i++){
         file = file.split('\n');
         var title = file[0];
         var header = file[1];
-        //header.split(',');
+        header = header.split(',');
         var key = file[2];
-        key.split(',');
+        key = key.split(',');
         var value = file[3];
-        value.split(',');
+        value = value.split(',');
         var data = key;
-        console.log(value[0]);
-        // data.unshift('stockId');
-        // data.unshift(title);
-        // data.join('\t');
-        // for (var j = 0; j < header.length; j++){
-        //   	var temp = [header[j]];
-        //   	for(var l = 0; l < value.length; l + header.length){
-        //   		temp.push(value[j + l]);
-        //   	}
-        //   	temp.join('\t');
-        //   	data.push(temp);
-        // }
-        // data.join('\n');
+        data.unshift('stockId');
+        data.unshift(title);
+        data.join(',');
+        for (var j = 0; j < header.length; j++){
+          	var temp = [header[j]];
+          	for(var l = 0; l < value.length; l + header.length){
+          		temp.push(value[j + l]);
+          	}
+          	temp.join(',');
+          	data.push(temp);
+        }
+        data.join('\n');
     }
     // fs.writeFileSync(__dirname + '/info/' + fileName + '.tsv', data);
 }
