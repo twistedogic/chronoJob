@@ -47,11 +47,12 @@ for (var i = 0; i < stockIds.length; i++){
           		var header = [];
           		var key = [];
           		$('#H').each(function(j, elem) {
-          		    header[j] = $(this).text();
+          		    header[j] = $(this).text().replace('/','-');
           		});
           		header = header.join(',');
           		$('.t_T1').each(function(j, elem) {
-          		    key[j] = $(this).text().replace(/ /g,"");
+          		    var text = $(this).text().replace(/( |')/g,"");
+                  key[j] = text.replace('/','');
           		});
           		key = key.join(',');
           		$('#C').each(function(j, elem) {

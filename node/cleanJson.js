@@ -1,8 +1,4 @@
-// var fs = require('fs');
-// var csv = require('csv-to-json');
-// var dir = fs.readdirSync('info/');
-// var json = csv.parse('info/'+ dir[1]);
-// console.log(json);
+var csv = require('csv-to-json');
 var fs = require('fs');
 var allStock = fs.readFileSync('../bluechip','utf8');
 var lines = allStock.split('\n');
@@ -11,6 +7,7 @@ var stockIds = [];
 for (var i = 0; i < lines.length; i++){
   stockIds.push(lines[i].split('_')[0]);
 }
+
 for (var i = 0; i < stockIds.length; i++){
     var stock = stockIds[i].split('.')[0];
     var line = [[],[],[],[],[],[]];
@@ -44,14 +41,24 @@ for (var i = 0; i < stockIds.length; i++){
     }
     var data=[];
     for (var k = 0; k < line.length; k++){
-        for (var j = 0; j < line[k].length; j++){
-            var temp = line[k];
-            data[k] = temp.join(',');
-        }
-        // line[k].join(',');
-        // line[k].join(',');
+        var temp = line[k];
+        data[k] = temp.join(',');
     }
-    data.join('\n');
-    console.log(data);
-    // fs.writeFileSync(__dirname + '/info/' + fileName + '.csv', csv);
+    var output = data[0];
+    for (var k = 1; k < line.length; k++){
+        output = output + '\n' + data[k];
+    }
+    fs.writeFileSync(__dirname + '/info/' + stock + '.csv', output);
 }
+var id = 0;
+var bulk = {"index":{"_index":"companyinfo","_type":"finanical","_id":id}};
+bulk = JSON.stringify(bulk);
+for (var i = 0; i < stockIds.length; i++){
+    var stock = stockIds[i].split('.')[0];
+    var json = csv.parse('info/'+ stock + '.csv');
+    for (var j = 0; j < json.length; j++){
+        id++;
+        bulk = bulk + '\n' + JSON.stringify(json[j]) + '\n' + JSON.stringify({"index":{"_index":"companyinfo","_type":"finanical","_id":id}});
+    }
+}
+fs.writeFileSync(__dirname + '/info/es.json', bulk);
