@@ -42,8 +42,7 @@ for (var i = 0; i < stockIds.length; i++){
     		fileName = fileName.split('=')[2];
       		if (res.statusCode == 200){
           		var $ = cheerio.load(body);
-          		var title = $('.title').text().replace(/ /g,"");
-          		title = title.replace(/(\r\n|\n|\r| |)/gm,"");
+          		var title = 'Year';
           		var value = [];
           		var header = [];
           		var key = [];

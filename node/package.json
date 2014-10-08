@@ -12,6 +12,7 @@
     "brain": "^0.7.0",
     "cheerio": "^0.17.0",
     "convnetjs": "^0.3.0",
+    "csv-to-json": "0.0.1",
     "decision-tree": "^0.3.0",
     "learningjs": "^0.1.2",
     "lodash": "^2.4.1",
