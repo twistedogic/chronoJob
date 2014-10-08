@@ -43,7 +43,7 @@ for (var i = 0; i < stockIds.length; i++){
       		if (res.statusCode == 200){
           		var $ = cheerio.load(body);
           		var title = $('.title').text().replace(/ /g,"");
-          		title = title.replace(/(\r\n|\n|\r| )/gm,"");
+          		title = title.replace(/(\r\n|\n|\r| |)/gm,"");
           		var value = [];
           		var header = [];
           		var key = [];
@@ -52,7 +52,7 @@ for (var i = 0; i < stockIds.length; i++){
           		});
           		header = header.join(',');
           		$('.t_T1').each(function(j, elem) {
-          		    key[j] = $(this).text();
+          		    key[j] = $(this).text().replace(/ /g,"");
           		});
           		key = key.join(',');
           		$('#C').each(function(j, elem) {

@@ -25,7 +25,7 @@ for (var i = 0; i < stockIds.length; i++){
         key.join(',');
         for (var j = 0; j < 5; j++){
           	var temp = [header[j],stock];
-          	for(var l = 0; l < value.length; l += header.length){
+          	for(var l = 0; l < value.length; l += 5){
           		var n = j + l;
           		temp.push(value[n]);
           	}
