@@ -42,14 +42,16 @@ for (var i = 0; i < stockIds.length; i++){
         line[k + 1].unshift(stock);
         line[k + 1].unshift(header[k]);
     }
+    var data=[];
     for (var k = 0; k < line.length; k++){
         for (var j = 0; j < line[k].length; j++){
-            
+            var temp = line[k];
+            data[k] = temp.join(',');
         }
         // line[k].join(',');
         // line[k].join(',');
-        console.log(line[k].length);
     }
-    console.log(line.length);
+    data.join('\n');
+    console.log(data);
     // fs.writeFileSync(__dirname + '/info/' + fileName + '.csv', csv);
 }
