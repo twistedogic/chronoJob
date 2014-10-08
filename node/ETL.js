@@ -8,7 +8,7 @@ for (var i = 0; i < lines.length; i++){
 }
 for (var i = 0; i < stockIds.length; i++){
     var stock = stockIds[i].split('.')[0];
-    for (var k = 4; k < 8; k++){
+    for (var k = 4; k < 9; k++){
         var fileName = stock + '-' + k;
         var file = fs.readFileSync('info/'+fileName+'.csv','utf8');
         file = file.split('\n');
@@ -19,19 +19,24 @@ for (var i = 0; i < stockIds.length; i++){
         key = key.split(',');
         var value = file[3];
         value = value.split(',');
-        var data = key;
-        data.unshift('stockId');
-        data.unshift(title);
-        data.join(',');
-        for (var j = 0; j < header.length; j++){
-          	var temp = [header[j]];
-          	for(var l = 0; l < value.length; l + header.length){
-          		temp.push(value[j + l]);
+        var data = [];
+        key.unshift('stockId');
+        key.unshift(title);
+        key.join(',');
+        for (var j = 0; j < 5; j++){
+          	var temp = [header[j],stock];
+          	for(var l = 0; l < value.length; l += header.length){
+          		var n = j + l;
+          		temp.push(value[n]);
           	}
           	temp.join(',');
           	data.push(temp);
         }
-        data.join('\n');
+        var csv = key;
+        for(var m = 0; m < data.length; m++){
+            csv = csv + '\n' + data[m];
+        }
+        fs.writeFileSync(__dirname + '/info/' + fileName + '.csv', csv);
+        console.log(fileName);
     }
-    // fs.writeFileSync(__dirname + '/info/' + fileName + '.tsv', data);
 }
