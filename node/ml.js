@@ -6,9 +6,10 @@ data = data.split('\n');
 data.pop();
 var training_data = [];
 var test_data = [];
+console.log(data[251]);
 for (var i = 251; i < data.length - 11; i++){
     var line = data[i].split(',');
-    var result = data[i+10].split(',')[line.length-1];
+    var result = data[i + 10].split(',')[line.length - 1];
     line.pop();
     var temp = {
     	input: [line],
@@ -31,5 +32,5 @@ net.train(training_data,{
 for (var i = 0; i < test_data.length; i++){
   var output = net.run(test_data[i].input);
   var actual = test_data[i].output;
-  console.log('actual: ' + actual + ', output: ' + output);
+//   console.log('actual: ' + actual + ', output: ' + output);
 }

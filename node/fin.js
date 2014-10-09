@@ -51,8 +51,10 @@ for (var i = 0; i < stockIds.length; i++){
           		});
           		header = header.join(',');
           		$('.t_T1').each(function(j, elem) {
-          		    var text = $(this).text().replace(/( |')/g,"");
-                  key[j] = text.replace('/','');
+          		    var text = $(this).text().replace(/( |'|%)/g,"");
+          		    text = text.replace('(','');
+          		    text = text.replace(')','');
+                    key[j] = text.replace('/','');
           		});
           		key = key.join(',');
           		$('#C').each(function(j, elem) {

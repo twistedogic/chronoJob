@@ -1,6 +1,6 @@
 var DecisionTree = require('decision-tree');
 var fs = require('fs');
-var data = fs.readFileSync('../report/indicators/0001.HKindicator.csv','utf8');
+var data = fs.readFileSync('../report/indicators/0002.HKindicator.csv','utf8');
 data = data.split('\n');
 data.pop();
 var training_data = [];
