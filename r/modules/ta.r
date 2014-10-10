@@ -67,6 +67,7 @@ for (i in 1:length(stockId)){
   #data <- last(data,n=700)
   data <- last(data,n=nrow(data)-251)
   data <- head(data,-1)
+  data <- cbind(data,fClose)
   tatitle <- c(tatitle,c('fclose'))
   colnames(data) <- tatitle
   assign(stock,data)
