@@ -69,6 +69,8 @@ for (i in 1:length(stockId)){
   data <- head(data,-1)
   data <- cbind(data,fClose)
   tatitle <- c(tatitle,c('fclose'))
+  data <- head(data,-1)
+  data <- tail(data,-1)
   colnames(data) <- tatitle
   assign(stock,data)
   day <- c(250,100,50)
