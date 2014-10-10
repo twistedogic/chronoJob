@@ -62,9 +62,13 @@ for (i in 1:length(stockId)){
   roc250 <-SMA(change,n = 250)
   tatitle <- c(tatitle,c('roc250'))
   data <- cbind(data,change,rsi,sto,smi,macd,bbands,atr,cV,tdi,adx,mfi,obv,sar,sma10,sma20,sma50,sma100,sma150,sma250,roc5,roc10,roc20,roc50,roc100,roc150,roc250)
-  colnames(data) <- tatitle
+  fClose <- last(CL,n=nrow(data)-251)
+  fClose <- tail(fClose,-1)
   #data <- last(data,n=700)
   data <- last(data,n=nrow(data)-251)
+  data <- head(data,-1)
+  tatitle <- c(tatitle,c('fclose'))
+  colnames(data) <- tatitle
   assign(stock,data)
   day <- c(250,100,50)
   maxmin <- character()
