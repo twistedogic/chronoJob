@@ -72,7 +72,7 @@ for (i in 1:length(stockId)){
   data <- head(data,-1)
   data <- tail(data,-1)
   colnames(data) <- tatitle
-  assign(stock,data)
+  assign(paste(stock,'TA',sep=''),data)
   day <- c(250,100,50)
   maxmin <- character()
   for (j in day){
