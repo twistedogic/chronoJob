@@ -5,7 +5,7 @@ test.hex = h2o.importFile(localH2O, path = paste(path,'/report/report.csv',sep='
 test.km = h2o.kmeans(data = test.hex, centers = 2, cols = tatitle)
 proto = character();
 for(i in 1:length(stockId)){
-	stock = stockId[1]
+	stock = stockId[i]
 	train = paste(stock,'TA',sep='')
 	stock.hex = h2o.importFile(localH2O, path = paste(path,'/report/results/',train,'.csv',sep=''), key = "stock.hex")
 	train = ceiling(nrow(stock.hex)/3*2)
@@ -22,3 +22,5 @@ for(i in 1:length(stockId)){
 # 	stock.gbm = h2o.gbm(y = "fClose", x = tatitle, distribution = "gaussian", data = stock.train, n.trees = 5, interaction.depth = 3)
 # 	stock.pred = h2o.predict(object=stock.gbm,newdata=stock.test)
 }
+colnames(proto) = c('stock',tdtitle[47:51])
+write.csv(proto,file=paste(path,'/report/prediction.csv',sep=''),row.names=FALSE)
