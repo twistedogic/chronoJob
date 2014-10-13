@@ -3,8 +3,8 @@ maxminResult <- character()
 print('Analyzing...')
 for (i in 1:length(stockId)){
   stock <- stockId[i]
-  stock <- get(stock)
-  data <- stock
+  hdata <- get(stock)
+  data <- get(stock)
   tatitle <- c('Open','High','Low','Close','Volume','Adjusted')
   CL <- Cl(data)
   HLC <- HLC(data)
@@ -63,15 +63,6 @@ for (i in 1:length(stockId)){
   roc250 <-SMA(change,n = 250)
   tatitle <- c(tatitle,c('roc250'))
   data <- cbind(data,change,rsi,sto,smi,macd,bbands,atr,cV,tdi,adx,mfi,obv,sar,sma10,sma20,sma50,sma100,sma150,sma250,roc5,roc10,roc20,roc50,roc100,roc150,roc250)
-  fClose <- last(CL,n=nrow(data)-251)
-  fClose <- tail(fClose,-1)
-  #data <- last(data,n=700)
-  data <- last(data,n=nrow(data)-251)
-  data <- head(data,-1)
-  data <- cbind(data,fClose)
-  tatitle <- c(tatitle,c('fclose'))
-  data <- head(data,-1)
-  data <- tail(data,-1)
   colnames(data) <- tatitle
   assign(paste(stock,'TA',sep=''),data)
   day <- c(250,100,50)
@@ -83,7 +74,7 @@ for (i in 1:length(stockId)){
   maxminResult <- rbind(maxminResult,maxmin)
   result <- rbind(result,c(stock,as.vector(last(data))))
 }
-tatitle <- c(tatitle,'max250','min250','mean250','max100','min100','mean100','max50','min50','mean50')
-ta <- c('Symbol',tatitle)
+ta <- c(tatitle,'max250','min250','mean250','max100','min100','mean100','max50','min50','mean50')
+ta <- c('Symbol',ta)
 result <- cbind(result,maxminResult)
 colnames(result) <- ta

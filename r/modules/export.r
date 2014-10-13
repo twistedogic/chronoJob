@@ -7,8 +7,4 @@ for (i in 1:length(stockId)){
 	stock <- paste(stockId[i],'TA',sep='')
 	write.csv(get(stock),file=paste(path,'/report/results/',stock,'.csv',sep=''),row.names=index(get(stock)))
 }
-for (i in 1:length(stockId)){
-	stock <- paste(stockId[i],'indicator',sep='')
-	write.csv(get(stock),file=paste(path,'/report/indicators/',stock,'.csv',sep=''),row.names=FALSE)
-}
 print('Analysis Complete')
