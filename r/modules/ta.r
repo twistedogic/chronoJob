@@ -3,8 +3,8 @@ maxminResult <- character()
 print('Analyzing...')
 for (i in 1:length(stockId)){
   stock <- stockId[i]
-  hdata <- get(stock)
   data <- get(stock)
+  o <- as.vector(data[,1])
   tatitle <- c('Open','High','Low','Close','Volume','Adjusted')
   CL <- Cl(data)
   HLC <- HLC(data)
