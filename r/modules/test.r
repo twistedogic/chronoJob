@@ -6,20 +6,28 @@ stock <- stockId[1]
 stock <- paste(stock,'TA',sep='')
 data <- get(stock)
 CL <- data[,4]
+sample <- character()
 pos <- character()
-for (j in 14:length(CL) - 30){
+for (j in 14:(length(CL)-30)){
     end <- j + 30
     temp <- CL[j:end]
-    max <- which.max(tmp)
+    max <- which.max(temp)
     check <- max + 1 + j
     if(max(temp) < CL[check]){
     	max <- character()
     }
-    pos <- c(pos,max)
+    maxpos <- max + j
+    pos <- c(pos,maxpos)
 }
+# pos <- unique(pos)
 for (j in 1:length(pos)){
 	start <- pos[j] - 14
-	data[start:j]
+	temp <- data[start:j]
+    row <- character()
+    for(k in 1:nrow(temp)){
+        row <- c(row, as.vector(temp[k]))
+    }
+    sample <- rbind(sample,row)
 }
 end.time <- Sys.time()
 time.taken <- end.time - start.time
