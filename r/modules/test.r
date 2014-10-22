@@ -1,7 +1,4 @@
 start.time <- Sys.time()
-library(h2o)
-path = getwd()
-localH2O = h2o.init(ip = "localhost", port = 54321)
 interval = 30
 period = 30
 stock <- stockId[1]
@@ -10,7 +7,7 @@ data <- get(stock)
 CL <- data[,4]
 kmsample <- character()
 glmsample <- character()
-pos <- character()
+hpos <- array()
 for (j in interval:(length(CL) - period)){
     end <- j + period
     temp <- CL[j:end]
@@ -18,23 +15,25 @@ for (j in interval:(length(CL) - period)){
     check <- max + 1 + j
     if(max(temp) > CL[check]){
         maxpos <- max + j
-        pos <- c(pos,maxpos)
+        hpos <- c(hpos,maxpos)
     }
 }
-pos <- unique(pos)
-DD <- array()
-mmd <- 0 
-peak <- 0
-for (j in 1:nrow(CL)){
-    number <- as.numeric(CL[j])
-    if(number > peak){
-        peak <- number
-    }
-    DD[j] <- 100*(peak-number)/peak
-    if (DD[j] > mmd){
-        mmd <- DD[j]
+hpos <- unique(lpos)
+lpos <- array()
+for (j in interval:(length(CL) - period)){
+    end <- j + period
+    temp <- CL[j:end]
+    min <- which.min(temp)
+    check <- max + 1 + j
+    if(min(temp) > CL[check]){
+        minpos <- min + j
+        lpos <- c(lpos,minpos)
     }
 }
+lpos <- unique(lpos)
+
+# path = getwd()
+# localH2O = h2o.init(ip = "localhost", port = 54321)
 # dateMax <- character()
 # maxClose <- character()
 # for (j in 1:10){

@@ -1,9 +1,6 @@
 library('RMySQL')
 importDataMySQL <- function(species.id, network.name, data.source, description) {
-  con <- dbConnect(MySQL(),
-    user="root", password="",
-    dbname="my_db", host="10.0.42.1",
-    client.flag=CLIENT_MULTI_STATEMENTS)
+  con <- dbConnect(MySQL(),user="root", password="",dbname="my_db", host="10.0.42.1",client.flag=CLIENT_MULTI_STATEMENTS)
   on.exit(dbDisconnect(con))
   sql <- sprintf("insert into networks
     (species_id, name, data_source, description, created_at)

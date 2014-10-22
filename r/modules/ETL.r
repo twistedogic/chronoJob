@@ -1,5 +1,4 @@
 library(quantmod)
-library(lubridate)
 library(TTR)
 library(tools)
 # parameters
@@ -13,7 +12,7 @@ source(paste(path,'/node/lookupTable.r',sep=''))
 setwd(paste(path,'/node/dataset/',sep=''))
 stockId <- list.files(path='.')
 for (i in 1:length(stockId)){
-stockId[i] <- file_path_sans_ext(stockId[i])
+    stockId[i] <- file_path_sans_ext(stockId[i])
 }
 getSymbols(stockId)
 setwd(path)

@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "brain": "^0.7.0",
     "cheerio": "^0.17.0",
+    "convnetjs": "^0.3.0",
     "csv-to-json": "0.0.1",
     "lodash": "^2.4.1",
     "mailgun-js": "^0.6.3",
