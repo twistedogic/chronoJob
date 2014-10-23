@@ -36,6 +36,8 @@ for (i in 1:length(stockId)){
   tatitle <- c(tatitle,names(obv))
   sar <- SAR(HL)
   tatitle <- c(tatitle,c('sar'))
+  dvi <- DVI(CL)
+  tatitle <- c(tatitle,c('dviMag','dviStr','dvi'))
   sma10 <-SMA(CL,n = 10)
   tatitle <- c(tatitle,c('sma10'))
   sma20 <-SMA(CL,n = 20)
@@ -62,7 +64,7 @@ for (i in 1:length(stockId)){
   tatitle <- c(tatitle,c('roc150'))
   roc250 <-SMA(change,n = 250)
   tatitle <- c(tatitle,c('roc250'))
-  data <- cbind(data,change,rsi,sto,smi,macd,bbands,atr,cV,tdi,adx,mfi,obv,sar,sma10,sma20,sma50,sma100,sma150,sma250,roc5,roc10,roc20,roc50,roc100,roc150,roc250)
+  data <- cbind(data,change,rsi,sto,smi,macd,bbands,atr,cV,tdi,adx,mfi,obv,sar,dvi,sma10,sma20,sma50,sma100,sma150,sma250,roc5,roc10,roc20,roc50,roc100,roc150,roc250)
   colnames(data) <- tatitle
   assign(paste(stock,'TA',sep=''),data)
   day <- c(250,100,50)

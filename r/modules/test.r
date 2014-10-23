@@ -1,32 +1,32 @@
 start.time <- Sys.time()
 interval = 30
-period = 30
+period = 50
 stock <- stockId[1]
 stock <- paste(stock,'TA',sep='')
 data <- get(stock)
 CL <- data[,4]
 kmsample <- character()
 glmsample <- character()
-hpos <- array()
+hpos <- character()
 for (j in interval:(length(CL) - period)){
     end <- j + period
     temp <- CL[j:end]
     max <- which.max(temp)
-    check <- max + 1 + j
+    check <- max + j
     if(max(temp) > CL[check]){
-        maxpos <- max + j
+        maxpos <- max + j -1
         hpos <- c(hpos,maxpos)
     }
 }
-hpos <- unique(lpos)
-lpos <- array()
+hpos <- unique(hpos)
+lpos <- character()
 for (j in interval:(length(CL) - period)){
     end <- j + period
     temp <- CL[j:end]
     min <- which.min(temp)
-    check <- max + 1 + j
+    check <- min + j
     if(min(temp) > CL[check]){
-        minpos <- min + j
+        minpos <- min + j -1
         lpos <- c(lpos,minpos)
     }
 }
