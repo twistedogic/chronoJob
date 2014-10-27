@@ -11,6 +11,7 @@ stock <- paste(stock,'TA',sep='')
 data <- get(stock)
 data <- na.omit(data)
 # Step 2: Create your indicator
+perf <- data$change
 price <- data$Close
 rsi <- data$rsi
 bb <- data$ptcB
@@ -22,15 +23,19 @@ rsis <- Lag(ifelse(rsi >= 70, -1, 0))
 bbs <- Lag(ifelse(bb >= 1, -1, 0))
 bbb <- Lag(ifelse(bb <= 0, 1, 0))
 sig <- rsib + rsis + bbs + bbb
-
+long <- Lag(ifelse(sig > 0, -1, 0))
+short <- Lag(ifelse(sig < 0, 1, 0))
+sig <- long + short
 # Step 4: The trading rules/equity curve
-ret <- data$Close*sig
+ret <- price*sig
 ret <- ret['2013-06-02/2014-10-20']
+benchmark <- dailyReturn(data)
+benchmark <- benchmark['2013-06-02/2014-10-20']
 eq <- exp(cumsum(ret))
 plot(eq)
 
 # Step 5: Evaluate strategy performance
 table.Drawdowns(ret, top=10)
-table.DownsideRisk(ret)
+table.DownsideRisk(cbind(benchmark,ret))
 table.AnnualizedReturns(ret)
-charts.PerformanceSummary(ret)
+charts.PerformanceSummary(cbind(benchmark,ret))

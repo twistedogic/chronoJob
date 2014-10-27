@@ -15,7 +15,7 @@ for(i in 1:length(stockId)){
 	c <- c(c,NA)
 	v <- c(v,NA)
 	change <- c(change,NA)
-	tdtitle <- c(tatitle,'fOpen','fHigh','fLow','fClose','fVolume','fChange')
+	tdtitle <- c(tatitle,'fO','fH','fL','fC','fV','fChange')
 	traindata <- cbind(data,o,h,l,c,v,change)
 	colnames(traindata) <- tdtitle
 	traindata <- tail(traindata,-251)

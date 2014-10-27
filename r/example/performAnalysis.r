@@ -24,4 +24,4 @@ plot(eq)
 # Step 5: Evaluate strategy performance
 table.Drawdowns(ret, top=10)
 table.DownsideRisk(ret)
-charts.PerformanceSummary(ret)
+charts.PerformanceSummary(cbind(dailyReturn(s),ret))

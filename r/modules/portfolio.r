@@ -9,7 +9,7 @@ dataset <- data$change
 for (i in 2:length(stockId)){
     stock <- stockId[i]
     stock <- paste(stock,'TA',sep='')
-    data <- get(stock)
+    data <- get(stock)['2013-06-02/2014-10-20']
     dataset <- merge(dataset, data$change)
 }
 names(dataset) <- stockId
