@@ -23,12 +23,30 @@ rsis <- Lag(ifelse(rsi >= 70, -1, 0))
 bbs <- Lag(ifelse(bb >= 1, -1, 0))
 bbb <- Lag(ifelse(bb <= 0, 1, 0))
 sig <- rsib + rsis + bbs + bbb
-long <- Lag(ifelse(sig > 0, -1, 0))
-short <- Lag(ifelse(sig < 0, 1, 0))
+long <- Lag(ifelse(sig > 0, 1, 0))
+short <- Lag(ifelse(sig < 0, -1, 0))
 sig <- long + short
 # Step 4: The trading rules/equity curve
-ret <- price*sig
+position <- price*sig
+bud <- 200
+ret <- position
+for(i in 1:length(position)){
+  if(is.na(position[i])){
+    ret[i] <- position[i]
+  } else {
+    bud <- bud - as.numeric(position[i])
+    ret[i] <- bud
+  }
+}
 ret <- ret['2013-06-02/2014-10-20']
+for(i in 1:length(ret)){
+  if(i < 2){
+    ret[i] <- 0
+  } else {
+    ret[i] <- (ret[i]-ret[i-1]/ret[i])*100
+  }
+}
+
 benchmark <- dailyReturn(data)
 benchmark <- benchmark['2013-06-02/2014-10-20']
 eq <- exp(cumsum(ret))
