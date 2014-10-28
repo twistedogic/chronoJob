@@ -16,6 +16,8 @@ price <- data$Close
 rsi <- data$rsi
 bb <- data$ptcB
 
+###buy and hold = 1
+###sell = 0
 # Step 3: Construct your trading rule
 sig <- Lag(ifelse(price > 0, 0, -1))
 rsib <- Lag(ifelse(rsi <= 35, 1, 0))
