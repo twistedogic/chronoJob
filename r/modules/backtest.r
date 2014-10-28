@@ -39,11 +39,14 @@ for(i in 1:length(position)){
   }
 }
 ret <- ret['2013-06-02/2014-10-20']
+pre <- 0
 for(i in 1:length(ret)){
   if(i < 2){
     ret[i] <- 0
   } else {
-    ret[i] <- (ret[i]-ret[i-1]/ret[i])*100
+    now <- as.numeric(ret[i])
+    ret[i] <- (pre/now)
+    pre <- as.numeric(ret[i])
   }
 }
 
