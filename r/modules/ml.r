@@ -7,7 +7,7 @@ for(i in 1:length(stockId)){
     print(i)
 	stock = stockId[i]
 	train = paste(stock,'TA',sep='')
-	stock.hex = h2o.importFile(localH2O, path = paste(path,'/report/results/',train,'.csv',sep=''), key = "stock.hex")
+	stock.hex = h2o.importFile(localH2O, path = paste(path,'/chronoJob/report/results/',train,'.csv',sep=''), key = "stock.hex")
 	train = ceiling(nrow(stock.hex)/3*2)
 	stock.test = last(stock.hex,n=500)
 	stock.train = stock.hex[index(stock.hex) < nrow(stock.hex)]
@@ -22,7 +22,7 @@ for(i in 1:length(stockId)){
 # 	stock.pred = h2o.predict(object=stock.gbm,newdata=stock.test)
 }
 colnames(proto) = c('stock',tdtitle[47:52])
-write.csv(proto,file=paste(path,'/report/prediction.csv',sep=''),row.names=FALSE)
+write.csv(proto,file=paste(path,'/chronoJob/report/prediction.csv',sep=''),row.names=FALSE)
 end.time <- Sys.time()
 time.taken <- end.time - start.time
 print(time.taken)

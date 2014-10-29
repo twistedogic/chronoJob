@@ -1,15 +1,14 @@
 rm(list=ls())
 start.time <- Sys.time()
-#path <- paste(getwd())
-path <- paste(getwd(),'/chronoJob',sep='')
+path <- paste(getwd())
 if (require('quantmod') == FALSE){
-    source(paste(path,'/r/modules/init.r',sep=''))
+  source(paste(path,'/chronoJob/r/modules/init.r',sep=''))
 }
-source(paste(path,'/r/modules/ETL.r',sep=''))
-source(paste(path,'/r/modules/filter.r',sep=''))
-source(paste(path,'/r/modules/ta.r',sep=''))
-source(paste(path,'/r/modules/traindata.r',sep=''))
-source(paste(path,'/r/modules/export.r',sep=''))
+source(paste(path,'/chronoJob/r/modules/ETL.r',sep=''))
+source(paste(path,'/chronoJob/r/modules/filter.r',sep=''))
+source(paste(path,'/chronoJob/r/modules/ta.r',sep=''))
+source(paste(path,'/chronoJob/r/modules/traindata.r',sep=''))
+source(paste(path,'/chronoJob/r/modules/export.r',sep=''))
 end.time <- Sys.time()
 time.taken <- end.time - start.time
 print(time.taken)
