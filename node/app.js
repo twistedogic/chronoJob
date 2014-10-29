@@ -6,7 +6,7 @@ var time = moment().zone('+0800').format("YYYY-MM-DD");
 var allStock = fs.readFileSync('../bluechip','utf8');
 var lines = allStock.split('\n');
 var stockIds = [];
-
+http://finance.yahoo.com/_td_charts_api/resource/charts;comparisonTickers=;gmtz=8;indicators=quote;range=10y;rangeSelected=undefined;ticker=0700.HK
 for (var i = 0; i < lines.length; i++){
   stockIds.push(lines[i].split('_')[0]);
 }
