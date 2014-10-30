@@ -1,12 +1,10 @@
 var fs = require('fs');
-var querystring = require('querystring');
 var request = require('request');
 var moment = require("moment");
 var time = moment().zone('+0800').format("YYYY-MM-DD");
 var allStock = fs.readFileSync('../bluechip','utf8');
 var lines = allStock.split('\n');
 var stockIds = [];
-http://finance.yahoo.com/_td_charts_api/resource/charts;comparisonTickers=;gmtz=8;indicators=quote;range=10y;rangeSelected=undefined;ticker=0700.HK
 for (var i = 0; i < lines.length; i++){
   stockIds.push(lines[i].split('_')[0]);
 }
@@ -25,33 +23,35 @@ for (var i = 0; i < lines.length; i++){
 //   temp = temp.join('.');
 //   stockIds.push(temp);
 // }
-
 for (var i = 0; i < stockIds.length; i++){
-    var url = 'http://ichart.finance.yahoo.com/table.csv?' + querystring.stringify({
-      s: stockIds[i],
-    //   a: 0,
-    //   b: 1,
-    //   c: 2010,
-      d: time.split('-')[1] - 1,
-      e: time.split('-')[2],
-      f: time.split('-')[0],
-      g: 'd',
-      ignore: '.csv'
-    });
-
+    var url = 'http://finance.yahoo.com/_td_charts_api/resource/charts;gmtz=8;indicators=quote;range=2y;rangeSelected=undefined;ticker=' + stockIds[i];
     request({
       url: url
     }, function (err, res, body) {
       if (err) { return cb(err); }
-      var fileName = res.request.path;
-      fileName = fileName.split('=')[1].split('&')[0];
       if (res.statusCode == 200){
-        var lookup = 'setSymbolLookup(`' + fileName + '`=list(src="csv",format="%Y-%m-%d"))' + '\n';
-        fs.writeFileSync(__dirname + '/dataset/' + fileName + '.csv', body);
-        fs.appendFileSync(__dirname + '/lookupTable.r', lookup);
+          var body = JSON.parse(body);
+          var data = body.data;
+          var symbol = data.meta.symbol;
+          var time = data.timestamp;
+          var ohlc = data.indicators.quote[0];
+          var open = ohlc.open;
+          var high = ohlc.high;
+          var low = ohlc.low;
+          var close = ohlc.close;
+          var volume = ohlc.volume;
+          var adj = close;
+          console.log(symbol);
+          var output = 'Date,Open,High,Low,Close,Volume,Adj.Close' + '\n';
+          for (var j = 0; j < time.length; j++){
+              output = output + moment.unix(time[j]).zone('+0800').format("YYYY-MM-DD") + ',' + open[j] + ',' + high[j] + ',' + low[j] + ',' + close[j] + ',' + volume[j] + ',' + adj[j] + '\n';
+          }
+          var lookup = 'setSymbolLookup(`' + symbol + '`=list(src="csv",format="%Y-%m-%d"))' + '\n';
+          fs.writeFileSync(__dirname + '/dataset/' + symbol + '.csv', output);
+          fs.appendFileSync(__dirname + '/lookupTable.r', lookup);
       } else {
-        console.log('fail to download '+fileName);
+        console.log('fail to download '+ stockIds[i]);
       }
     });
-  }
-  console.log('Scraping...');
+}
+console.log('Scraping...');

@@ -1,9 +1,9 @@
 newstockId <- character()
 filtered <- character()
 for (i in 1:length(stockId)){
-    if (nrow(get(stockId[i])) > 1000){
+    if (nrow(get(stockId[i])) > 500){
         #if(last(index(get(stockId[i]))) == as.Date('2014-09-16')){
-        total <- 900
+        total <- 500
         data <- get(stockId[i])
         active <- as.vector(last(ROC(Cl(data)),n=total))
         inactive <- length(active[active==0])
