@@ -102,7 +102,7 @@ FindOptimumStrategy <- function(stockId){
   #Optimise the strategy
   trainingReturns <- RunIterativeStrategy(stockId)
   pTab <- PerformanceTable(trainingReturns)
-  toptrainingReturns <- SelectTopNStrategies(trainingReturns,pTab,"SharpeRatio",5)
+  toptrainingReturns <- SelectTopNStrategies(trainingReturns,pTab,"SharpeRatio",10)
   charts.PerformanceSummary(toptrainingReturns,main=paste(nameOfStrategy,"- Training"),geometric=FALSE)
   return (pTab)
 }
