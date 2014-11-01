@@ -12,6 +12,10 @@ for (var i = 0; i < lines.length; i++){
   stockIds.push(lines[i].split('_')[0]);
 }
 
+var stockIds = fs.readdirSync(__dirname + '/dataset');
+for(var i = 0; i < stockIds.length; i++){
+    stockIds[i] = stockIds[i].split('.')[0] + '.' + stockIds[i].split('.')[1];
+}
 // ALL
 // function pad(n, width, z) {
 //   z = z || '0';
