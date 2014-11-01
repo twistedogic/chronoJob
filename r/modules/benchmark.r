@@ -113,7 +113,7 @@ StartDate = as.Date("2010-01-01")
 EndDate = Sys.Date()
 # outofSampleStartDate = as.Date("2010-01-02")
 pTab <- FindOptimumStrategy(stockId) #pTab is the performance table of the various parameters tested
-
+write.csv(pTab,file=paste(path,'/chronoJob/report/benchmark.csv',sep=''))
 #Test out of sample
 # dev.new()
 #Manually specify the parameter that we want to trade here, just because a strategy is at the top of
