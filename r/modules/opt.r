@@ -1,4 +1,3 @@
- 
 library("quantmod")
 library("PerformanceAnalytics")
  
