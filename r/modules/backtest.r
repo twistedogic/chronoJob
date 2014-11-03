@@ -52,9 +52,24 @@ rsis <- Lag(ifelse(rsi >= 70, -1, 0))
 bbs <- Lag(ifelse(bb >= 1, -1, 0))
 bbb <- Lag(ifelse(bb <= 0, 1, 0))
 sig <- rsib + rsis + bbs + bbb
-long <- ifelse(sig > 0, 1, 0.5)
-short <- ifelse(sig < 0, -1, 0.5)
+long <- ifelse(sig > 0, 1, 0)
+short <- ifelse(sig < 0, -1, 0)
 sig <- long + short
+stats <- 1
+for (i in nrow(sig)){
+  if (is.na(sig[i])){
+    stats <- stats
+  } else {
+    if (sig[i] > 0){
+      stats <- 1
+    }
+    if (sig[i] < 0){
+      stats <- 0
+    }
+    stats <- stats
+    sig[i] <- stats
+  }
+}
 # Step 4: The trading rules/equity curve
 position <- benchmark*sig
 colnames(position) <- c('backtest')
