@@ -1,7 +1,6 @@
 var fs = require('fs');
 var request = require('request');
 var moment = require("moment");
-var time = moment().zone('+0800').format("YYYY-MM-DD");
 var allStock = fs.readFileSync('../bluechip','utf8');
 var lines = allStock.split('\n');
 var stockIds = [];

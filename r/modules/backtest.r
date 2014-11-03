@@ -56,7 +56,7 @@ long <- ifelse(sig > 0, 1, 0)
 short <- ifelse(sig < 0, -1, 0)
 sig <- long + short
 stats <- 1
-for (i in nrow(sig)){
+for (i in 1:nrow(sig)){
   if (is.na(sig[i])){
     stats <- stats
   } else {
