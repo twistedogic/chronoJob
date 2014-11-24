@@ -67,7 +67,7 @@ for (i in 1:length(stockId)){
   tatitle <- c(tatitle,c('roc250'))
   data <- cbind(data,change,rsi,sto,smi,macd,bbands,atr,cV,tdi,adx,mfi,obv,sar,dvi,sma10,sma20,sma50,sma100,sma150,sma250,roc5,roc10,roc20,roc50,roc100,roc150,roc250)
   colnames(data) <- tatitle
-  assign(paste(stock,'TA',sep=''),data)
+  assign(paste(stock,'TA',sep=''),na.omit(data))
   day <- c(250,100,50)
   maxmin <- character()
   for (j in day){
