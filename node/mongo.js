@@ -1,14 +1,15 @@
 var mongoose = require('mongoose');
 var moment = require('moment');
 mongoose.connect('mongodb://172.17.42.1/stock');
-
 var fs = require('fs');
-var lineList = fs.readFileSync('/home/guest/chronoJob/report/results/0001.HKTA.csv').toString().split('\n');
+var stock = '0001.HK';
+var lineList = fs.readFileSync('/home/guest/chronoJob/report/results/' + stock + 'TA.csv').toString().split('\n');
 lineList.shift(); // Shift the headings off the list of records.
 
 var schemaKeyList = ["Date","Open","High","Low","Close","Volume","Adjusted","change","rsi","fastK","fastD","slowD","smi","smiSignal","macd","macdSignal","Lower","Middle","Upper","ptcB","tr","atr","trueHigh","trueLow","cV","tdi","di","DIp","DIn","DX","ADX","mfi","obv","sar","dviMag","dviStr","dvi","sma10","sma20","sma50","sma100","sma150","sma250","roc5","roc10","roc20","roc50","roc100","roc150","roc250"];
 
 var stockSchema = new mongoose.Schema({
+    'Symbol': String,
     'Date': Date,
     'Open': Number,
     'High': Number,
@@ -88,8 +89,9 @@ function createDocRecurse (err) {
     if (lineList.length) {
         var line = lineList.shift();
         var doc = new stockDoc();
+        doc['Symbol'] = stock;
         line.split(',').forEach(function (entry, i) {
-            if (i == 0){
+            if (i === 0) {
                 doc[schemaKeyList[i]] = moment(entry);
             } else {
                 doc[schemaKeyList[i]] = entry;
@@ -104,6 +106,7 @@ function createDocRecurse (err) {
     //     // After the last entry query to show the result.
     //     queryAllEntries();
     // }
+    
 }
 
 createDocRecurse(null);
