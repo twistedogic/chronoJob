@@ -1,79 +1,71 @@
 var fs = require('fs');
-var querystring = require('querystring');
-var request = require('request');
-var cheerio = require('cheerio');
-var moment = require("moment");
-var time = moment().zone('+0800').format("YYYY-MM-DD");
+var YQL = require('yql');
 var allStock = fs.readFileSync('../bluechip','utf8');
 var lines = allStock.split('\n');
 var stockIds = [];
 
 for (var i = 0; i < lines.length; i++){
-  stockIds.push(lines[i].split('_')[0]);
+  stockIds.push(lines[i].split('_')[0].split('.')[0]);
 }
 
-var stockIds = fs.readdirSync(__dirname + '/dataset');
-for(var i = 0; i < stockIds.length; i++){
-    stockIds[i] = stockIds[i].split('.')[0] + '.' + stockIds[i].split('.')[1];
-}
-// ALL
-// function pad(n, width, z) {
-//   z = z || '0';
-//   n = n + '';
-//   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-// }
+var baseurl = [
+    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=4&symbol=',
+    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=5&symbol=',
+    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=6&symbol=',
+    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=7&symbol=',
+    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=8&symbol='
+    ];
+var css = [
+    '//*[(@id = "FR")]//td',
+    '//*[(@id = "PL")]//td',
+    '//*[(@id = "CF")]//td',
+    '//*[(@id = "BS")]//td',
+    '//*[(@id = "ES")]//td'
+    ];
 
-// for (var i = 0; i < 9999; i++){
-//   var temp = [];
-//   temp.push(pad(i,4));
-//   temp.push('HK');
-//   temp = temp.join('.');
-//   stockIds.push(temp);
-// }
-// 
-
-for (var i = 0; i < stockIds.length; i++){
-    var stock = stockIds[i].split('.')[0];
-    for (var k = 4; k < 9; k++){
-    	var url = 'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=' + k + '&symbol=' + stock;
-    	request({
-    		url: url
-    	}, function (err, res, body) {
-    		if (err) { return cb(err); }
-      		var fileName = res.request.path;
-      		//console.log(fileName);
-            var n = fileName.split('=')[1].split('&')[0];
-    		fileName = fileName.split('=')[2];
-      		if (res.statusCode == 200){
-          		var $ = cheerio.load(body);
-          		var title = 'Year';
-          		var value = [];
-          		var header = [];
-          		var key = [];
-          		$('#H').each(function(j, elem) {
-          		    header[j] = $(this).text().replace('/','-');
-          		});
-          		header = header.join(',');
-          		$('.t_T1').each(function(j, elem) {
-          		    var text = $(this).text().replace(/( |'|%)/g,"");
-          		    text = text.replace('(','');
-          		    text = text.replace(')','');
-                    key[j] = text.replace('/','');
-          		});
-          		key = key.join(',');
-          		$('#C').each(function(j, elem) {
-          		    value[j] = $(this).text().replace(/(,)/gm,"");
-          		});
-          		value = value.join(',');
-          		var data = title + '\n' + header + '\n' + key + '\n' + value;
-          		fileName = fileName + '-' + n;
-          		console.log(fileName);
-          		fs.writeFileSync(__dirname + '/info/' + fileName + '.csv', data);
-      		} else {
-        		console.log('fail to download '+fileName);
-      		}
-    	});
+for (var i = 0; i < stockIds.length; i++){    
+    var stock = stockIds[i];
+    for (var m = 0; m < baseurl.length; m++){
+        var url = baseurl[m] + stock;
+        var xpath = css[m] + '| //*[contains(concat( " ", @class, " " ), concat( " ", "font12a_white", " " ))]';
+        var query = new YQL('select * from html where url="' + url + '" and xpath=' + "'" + xpath + "'");
+        query.exec(function (error, response) {
+            if(!error){
+                var data = response.query.results.td;
+                var symbol = response.query.results.a.content;
+                var info = [];
+                var year = 0;
+                var head = 0;
+                for (var j = 0; j < data.length; j++){
+                    if (data[j].id == 'H'){
+                        year++;
+                    }
+                    if (data[j].class == 't_H2'){
+                        head++;
+                    }
+                    var colspan = JSON.stringify(data[j]).split('colspan');
+                    if (colspan.length < 2){
+                        var value = JSON.stringify(data[j]).split(':');
+                        value = value[value.length - 1].replace(/(,|\}|"|\(|\)|%| |'|\/|  )/g, '');
+                        info.push(value);
+                    }
+                }
+                year = year / (head - year);
+                var header = info.length/(year + 1);
+                var csv = 'symbol,' + info[0];
+                for (var l = 1; l < header; l++){
+                    csv = csv + ',' + info[l*(year + 1)];
+                }
+                for (var k = 1; k < year + 1; k++){
+                    var row = symbol + ',' +info[k];
+                    for (var l = 1; l < header; l++){
+                        row = row + ',' + info[k + l*(year + 1)];
+                    }
+                    csv = csv + '\n' + row;
+                }
+                fs.writeFileSync(__dirname + '/info/' + symbol.split('.')[0] + info[0] + '.csv',csv);
+                console.log(csv);
+            }
+        });
     }
-    // var url = 'http://www.etnet.com.hk/www/tc/stocks/realtime/quote_ci_brief.php?code=' + stock;
 }
-console.log('Scraping...');

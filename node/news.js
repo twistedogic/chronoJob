@@ -28,23 +28,34 @@ for (var i = 0; i < lines.length; i++){
 //     });
 // }
 // console.log('Scraping...');
-var base_aaurl = 'http://www.aastocks.com/en/stocks/news/aamm/';
-var sessions = [
-    'price-risen',
-    'price-dropped',
-    'block-traded',
-    'price-fluctuated'
-    ];
-var xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "newstime2", " " ))] | //*[contains(concat( " ", @class, " " ), concat( " ", "h6", " " ))]';
-for (var i = 1; i < sessions.length; i++){
-    var query = new YQL('select * from html where url="' + base_aaurl + sessions[i] + '" and xpath=' + "'" + xpath + "'");
-    query.exec(function (error, response) {
-        if(!error){
-            var data = response.query.results;
-            for (var j = 0; j < data.div.length; j++){
-                console.log(data.div[j].p+'\t'+data.a[j].title);
-            }
-        }
-        // Do something with results (response.query.results)
+// var base_aaurl = 'http://www.aastocks.com/en/stocks/news/aamm/';
+// var sessions = [
+//     'price-risen',
+//     'price-dropped',
+//     'block-traded',
+//     'price-fluctuated'
+//     ];
+// var xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "newstime2", " " ))] | //*[contains(concat( " ", @class, " " ), concat( " ", "h6", " " ))]';
+// for (var i = 1; i < sessions.length; i++){
+//     var query = new YQL('select * from html where url="' + base_aaurl + sessions[i] + '" and xpath=' + "'" + xpath + "'");
+//     query.exec(function (error, response) {
+//         if(!error){
+//             var data = response.query.results;
+//             for (var j = 0; j < data.div.length; j++){
+//                 console.log(data.div[j].p+'\t'+data.a[j].title);
+//             }
+//         }
+//         // Do something with results (response.query.results)
+//     });
+// }
+var symbol = '0001';
+var base_aaurl, query, xpath;
+    base_aaurl = "http://www.aastocks.com/tc/stocks/analysis/stock-aafn/" + symbol + "/0/all/1";
+    xpath = '//*[contains(concat( \" \", @class, \" \" ), concat( \" \", \"h6\", \" \" ))] | //*[contains(concat( " ", @class, " " ), concat( " ", "newstime2", " " ))] | //*[contains(concat( " ", @class, " " ), concat( " ", "pad4", " " ))]';
+    query = new YQL("select * from html where url=\"" + base_aaurl + "\" and xpath=" + "'" + xpath + "'");
+    query.exec(function(error, response) {
+      if (!error) {
+        var data = response.query.results;
+        console.log(data.a);
+      }
     });
-}
