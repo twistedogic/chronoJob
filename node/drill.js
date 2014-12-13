@@ -12,7 +12,9 @@ request.post({url:'http://192.168.100.74:8047/query', form: data}, function opti
   if (err) {
     return console.error('upload failed:', err);
   }
-  console.log('Upload successful!  Server responded with:', httpResponse);
   var doc = new dom().parseFromString(body);
-  var nodes = xpath.select("//title", doc);
+  var nodes = xpath.select('//td', doc);
+  for (var i = 0; i < nodes.length; i++){
+      console.log(nodes[i].firstChild.data);
+  }
 });
