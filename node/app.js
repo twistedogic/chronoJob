@@ -43,9 +43,9 @@ for (var i = 0; i < stockIds.length; i++){
       var volume = ohlc.volume;
       var adj = close;
       console.log(symbol);
-      var output = 'Date,Open,High,Low,Close,Volume,Adj.Close';
+      var output = 'Symbol,Date,Open,High,Low,Close,Volume,Adj.Close';
       for (var j = 0; j < time.length; j++){
-          output = output + '\n' + moment.unix(time[j]).zone('+0800').format("YYYY-MM-DD") + ',' + open[j] + ',' + high[j] + ',' + low[j] + ',' + close[j] + ',' + volume[j] + ',' + adj[j];
+          output = output + '\n' + symbol + ',' + moment.unix(time[j]).zone('+0800').format("YYYY-MM-DD") + ',' + open[j] + ',' + high[j] + ',' + low[j] + ',' + close[j] + ',' + volume[j] + ',' + adj[j];
       }
       var lookup = 'setSymbolLookup(`' + symbol + '`=list(src="csv",format="%Y-%m-%d"))' + '\n';
       fs.writeFileSync(__dirname + '/dataset/' + symbol + '.csv', output);

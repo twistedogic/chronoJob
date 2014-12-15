@@ -1,6 +1,5 @@
 var fs = require('fs');
 var request = require('request');
-var cheerio = require('cheerio');
 var moment = require("moment");
 var stockIds = fs.readdirSync(__dirname + '/dataset');
 for(var i = 0; i < stockIds.length; i++){
@@ -25,8 +24,8 @@ for (var i = 0; i < stockIds.length; i++){
           var volume = ohlc.volume;
           var adj = close;
           console.log(symbol);
-          var j = time.length;
-          var output = '\n' + moment.unix(time[j]).zone('+0800').format("YYYY-MM-DD") + ',' + open[j] + ',' + high[j] + ',' + low[j] + ',' + close[j] + ',' + volume[j] + ',' + adj[j];
+          var j = time.length - 1;
+          var output = '\n' + symbol + ',' + moment.unix(time[j]).zone('+0800').format("YYYY-MM-DD") + ',' + open[j] + ',' + high[j] + ',' + low[j] + ',' + close[j] + ',' + volume[j] + ',' + adj[j];
           fs.appendFileSync(__dirname + '/dataset/' + symbol + '.csv', output);
       } else {
         console.log('fail to download '+ stockIds[i]);

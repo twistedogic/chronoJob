@@ -37,7 +37,6 @@ for (var i = 1; i < sessions.length; i++){
     });
 }
 for (var i = 0; i < stockIds.length;i++){
-    console.log(stockIds[i]);
     var base_aaurl, query, xpath;
         base_aaurl = "http://www.aastocks.com/tc/stocks/analysis/stock-aafn/" + stockIds[i] + "/0/all/1";
         xpath = '//*[contains(concat( \" \", @class, \" \" ), concat( \" \", \"h6\", \" \" ))] | //*[contains(concat( " ", @class, " " ), concat( " ", "newstime2", " " ))] | //*[contains(concat( " ", @class, " " ), concat( " ", "pad4", " " ))]';
@@ -58,6 +57,7 @@ for (var i = 0; i < stockIds.length;i++){
                 }
             }
             var symbol = data.div[0].p.split('(')[1].split(')')[0];
+            console.log(symbol + '-tc');
             var csv = 'symbol,time,unix,news';
             for (var j = 0; j < data.a.length; j++){
                 csv = csv + '\n' + symbol + ',' + time[j] + ',' + unix[j] + ',' + data.a[j].content.replace(/(,|\n|\m| )/g, '');
@@ -86,6 +86,7 @@ for (var i = 0; i < stockIds.length;i++){
                 }
             }
             var symbol = data.div[0].p.split('(')[1].split(')')[0];
+            console.log(symbol + '-en');
             var csv = 'symbol,time,unix,news';
             for (var j = 0; j < data.a.length; j++){
                 csv = csv + '\n' + symbol + ',' + time[j] + ',' + unix[j] + ',' + data.a[j].content.replace(/(,|\n|\m| )/g, '');

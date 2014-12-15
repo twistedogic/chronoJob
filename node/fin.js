@@ -64,7 +64,7 @@ for (var i = 0; i < stockIds.length; i++){
                     csv = csv + '\n' + row;
                 }
                 fs.writeFileSync(__dirname + '/info/' + symbol.split('.')[0] + info[0] + '.csv',csv);
-                console.log(csv);
+                console.log(symbol);
             }
         });
     }

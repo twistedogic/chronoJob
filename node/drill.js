@@ -4,7 +4,7 @@ var xpath = require('xpath');
 var dom = require('xmldom').DOMParser;
 var formData = {
     queryType:'SQL',
-    query:'SELECT * FROM cp.`employee.json` LIMIT 20'
+    query:'SELECT columns[0] as "Symbol", columns[1] as "Date", columns[2] as "Open",  FROM dfs.`/data/dataset/` where columns'
 };
 var data = qs.stringify(formData);
 
@@ -30,5 +30,5 @@ request.post({url:'http://192.168.100.74:8047/query', form: data}, function opti
         csv = csv + ',' + nodes[k + l].firstChild.data;
     }
   }
-  console.log(csv);
+  console.log(csv.split('\n').length);
 });
