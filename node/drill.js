@@ -1,10 +1,13 @@
+var cassandra = require('cassandra-driver');
+var client = new cassandra.Client({contactPoints: ['172.17.2.141']});
+
 var request = require('request');
 var qs = require('qs');
 var xpath = require('xpath');
 var dom = require('xmldom').DOMParser;
 var formData = {
     queryType:'SQL',
-    query:'SELECT columns[0] as "Symbol", columns[1] as "Date", columns[2] as "Open",  FROM dfs.`/data/dataset/` where columns'
+    query:"SELECT columns[0] as s, columns[1] as d, columns[2] as o, columns[3] as l, columns[4] as l, columns[5] as c  FROM dfs.`/data/dataset/` where columns[0] like '%.HK'"
 };
 var data = qs.stringify(formData);
 
@@ -25,7 +28,6 @@ request.post({url:'http://192.168.100.74:8047/query', form: data}, function opti
   }
   for (var k = 0; k < nodes.length; k += title.length){
     csv = csv + '\n' + nodes[k].firstChild.data;
-    console.log(k);
     for (var l = 1; l < title.length; l++){
         csv = csv + ',' + nodes[k + l].firstChild.data;
     }

@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cassandra-driver": "^1.0.2",
     "cheerio": "^0.17.0",
     "mailgun-js": "^0.6.3",
     "moment": "^2.8.3",
