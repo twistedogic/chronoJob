@@ -8,12 +8,23 @@ library(tools)
 # y <- year(endDate) - 2
 # startDate <- paste(y,m,d,sep="-")
 # startDate <- as.Date(startDate)
-source(paste(path,'/chronoJob/node/lookupTable.r',sep=''))
-setwd(paste(path,'/chronoJob/node/dataset/',sep=''))
-stockId <- list.files(path='.')
-for (i in 1:length(stockId)){
-    stockId[i] <- file_path_sans_ext(stockId[i])
+# source(paste(path,'/chronoJob/node/lookupTable.r',sep=''))
+# setwd(paste(path,'/chronoJob/node/dataset/',sep=''))
+# stockId <- list.files(path='.')
+# for (i in 1:length(stockId)){
+#     stockId[i] <- file_path_sans_ext(stockId[i])
+# }
+# getSymbols(stockId)
+# setwd(path)
+source(paste(path,'/chronoJob/r/modules/db.r',sep=''))
+stockId <- character()
+stockList <- read.csv(paste(path,'/chronojob/bluechip',sep=''),header=FALSE)
+for (i in 1:nrow(stockList)){
+    stockId[i] <- unlist(strsplit(as.character(stockList[i,]),"_"))[1]
 }
-getSymbols(stockId)
-setwd(path)
+for (i in 1:length(stockId){
+    
+}
+# assign(paste(stock,'TA',sep=''),na.omit(data))
+
 print('ETL Complete')

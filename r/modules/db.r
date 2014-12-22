@@ -1,22 +1,13 @@
 library('RMySQL')
-importDataMySQL <- function(species.id, network.name, data.source, description) {
-  con <- dbConnect(MySQL(),user="root", password="",dbname="my_db", host="10.0.42.1",client.flag=CLIENT_MULTI_STATEMENTS)
+library('xts')
+getData <- function(stockId) {
+  con <- dbConnect(MySQL(),user="root", password="",dbname="stock", host="192.168.100.74",client.flag=CLIENT_MULTI_STATEMENTS)
   on.exit(dbDisconnect(con))
-  sql <- sprintf("insert into networks
-    (species_id, name, data_source, description, created_at)
-    values (%d, '%s', '%s', '%s', NOW());
-    select last_insert_id();",
-    species.id, network.name, data.source, description)
-  rs <- dbSendQuery(con, sql)
-
-  if (dbMoreResults(con)) {
-    rs <- dbNextResult(con)
-    id <- fetch(rs)[1,1]
-  } else {
-    stop('Error getting last inserted id.')
+  sql <- sprintf("select * from hist where symbol = '%s';",stockId)
+  res <- dbGetQuery(con, sql)
+  for (i in 3:7){
+    res[,i] <- as.numeric(res[,i])
   }
-
-  dbClearResult(rs)
-
-  return(id)
+  tf <- as.xts(res[,3:7],order.by=as.Date(res$date),unique=T)
+  return(tf)
 }
