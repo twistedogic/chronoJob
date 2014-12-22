@@ -8,6 +8,6 @@ getData <- function(stockId) {
   for (i in 3:7){
     res[,i] <- as.numeric(res[,i])
   }
-  tf <- as.xts(res[,3:7],order.by=as.Date(res$date),unique=T)
+  tf <- as.xts(res[,3:7],order.by=as.Date(res$Date),unique=T)
   return(tf)
 }

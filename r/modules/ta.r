@@ -6,7 +6,7 @@ for (i in 1:length(stockId)){
   print(stock)
   data <- get(stock)
   o <- as.vector(data[,1])
-  tatitle <- c('Open','High','Low','Close','Volume','Adjusted')
+  tatitle <- c('Open','High','Low','Close','Volume')
   CL <- Cl(data)
   HLC <- HLC(data)
   HL <- data[,c(2,3)]
@@ -15,8 +15,8 @@ for (i in 1:length(stockId)){
   tatitle <- c(tatitle,c('change'))
   rsi <- RSI(CL) #rsi
   tatitle <- c(tatitle,c('rsi'))
-  sto <- stoch(HLC, nFastK = 14, nFastD = 3, nSlowD = 3, maType = 'EMA') * 100 #FastK,FastD,SlowD
-  tatitle <- c(tatitle,names(sto))
+#   sto <- stoch(HLC, nFastK = 14, nFastD = 3, nSlowD = 3, maType = 'EMA') * 100 #FastK,FastD,SlowD
+#   tatitle <- c(tatitle,names(sto))
   smi <- SMI(HLC, n = 13, nFast = 2, nSlow = 25, nSig = 9) #smi,smiSignal
   tatitle <- c(tatitle,c('smi','smiSignal'))
   macd <- MACD(CL, nFast = 12, nSlow = 26, nSig = 9) * 100 #macd,macdSignal
@@ -65,19 +65,19 @@ for (i in 1:length(stockId)){
   tatitle <- c(tatitle,c('roc150'))
   roc250 <-SMA(change,n = 250)
   tatitle <- c(tatitle,c('roc250'))
-  data <- cbind(data,change,rsi,sto,smi,macd,bbands,atr,cV,tdi,adx,mfi,obv,sar,dvi,sma10,sma20,sma50,sma100,sma150,sma250,roc5,roc10,roc20,roc50,roc100,roc150,roc250)
+  data <- cbind(data,change,rsi,smi,macd,bbands,atr,cV,tdi,adx,mfi,obv,sar,dvi,sma10,sma20,sma50,sma100,sma150,sma250,roc5,roc10,roc20,roc50,roc100,roc150,roc250)
   colnames(data) <- tatitle
   assign(paste(stock,'TA',sep=''),na.omit(data))
-  day <- c(250,100,50)
-  maxmin <- character()
-  for (j in day){
-    data <- last(data,n=j)
-    maxmin <- cbind(maxmin,as.vector(max(data[,2])),as.vector(min(data[,3])),as.vector(mean(data[,4])))
-  }
-  maxminResult <- rbind(maxminResult,maxmin)
-  result <- rbind(result,c(stock,as.vector(last(data))))
+#   day <- c(250,100,50)
+#   maxmin <- character()
+#   for (j in day){
+#     data <- last(data,n=j)
+#     maxmin <- cbind(maxmin,as.vector(max(data[,2])),as.vector(min(data[,3])),as.vector(mean(data[,4])))
+#   }
+#   maxminResult <- rbind(maxminResult,maxmin)
+#   result <- rbind(result,c(stock,as.vector(last(data))))
 }
-ta <- c(tatitle,'max250','min250','mean250','max100','min100','mean100','max50','min50','mean50')
-ta <- c('Symbol',ta)
-result <- cbind(result,maxminResult)
-colnames(result) <- ta
+# ta <- c(tatitle,'max250','min250','mean250','max100','min100','mean100','max50','min50','mean50')
+# ta <- c('Symbol',ta)
+# result <- cbind(result,maxminResult)
+# colnames(result) <- ta
