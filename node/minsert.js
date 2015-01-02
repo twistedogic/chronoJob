@@ -75,9 +75,11 @@ for (var i = 0; i < stockIds.length; i++){
                 res.on('error', function(err) {
                     console.log('Result error: ' + inspect(err));
                 })
+                .on('end', function(info) {
+                    console.log('Result finished successfully');
+                });
             })
-            .on('end', function() {
-            });
+            .on('end', function() {});
     }
 }
 
