@@ -8,14 +8,5 @@ for (i in 1:length(stockId)){
     }
 }
 stockId <- newstockId
-for (i in 1:length(stockId)){
-  data <- get(stockId[i])
-  cName <- colnames(data)
-  newData <- cbind(as.numeric(data[,1]),as.numeric(data[,2]),as.numeric(data[,3]),as.numeric(data[,4]),as.numeric(data[,5]))
-  colnames(newData) <- cName
-  newData <- xts(newData,order.by = index(data))
-  newData <- na.omit(newData)
-  assign(stockId[i],newData)
-}
 print('Filter Complete')
 print(length(stockId))

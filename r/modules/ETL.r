@@ -16,14 +16,15 @@ library(tools)
 # }
 # getSymbols(stockId)
 # setwd(path)
-source(paste(path,'/chronoJob/r/modules/db.r',sep=''))
+# source(paste(path,'/chronoJob/r/modules/db.r',sep=''))
+source(paste(path,'/chronoJob/r/modules/dataproxy.r',sep=''))
 stockId <- character()
 stockList <- read.csv(paste(path,'/chronoJob/bluechip',sep=''),header=FALSE)
 for (i in 1:nrow(stockList)){
     stockId[i] <- unlist(strsplit(as.character(stockList[i,]),"_"))[1]
 }
 for (i in 1:length(stockId)){
-    stockData <- getData(stockId[i])
+    stockData <- parseData(stockId[i])
     assign(stockId[i],na.omit(stockData))
 }
 # assign(paste(stock,'TA',sep=''),na.omit(data))

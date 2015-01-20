@@ -14,7 +14,7 @@ for (var i = 0; i < lines.length; i++){
 
 var c = new Client();
 c.connect({
-  host: '192.168.100.74',
+  host: '192.168.100.70',
   user: 'root'
 });
 c.on('connect', function() {

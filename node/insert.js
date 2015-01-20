@@ -1,5 +1,5 @@
 var cassandra = require('cassandra-driver');
-var client = new cassandra.Client({contactPoints: ['172.17.2.141']});
+var client = new cassandra.Client({contactPoints: ['192.168.100.78']});
 var assert = require('assert');
 var fs = require('fs');
 
@@ -10,16 +10,16 @@ for (var i = 0; i < lines.length; i++){
   stockIds.push(lines[i].split('_')[0]);
 }
 
-client.execute("CREATE KEYSPACE IF NOT EXISTS stock WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };",function(err){
-    if (err){console.log(err)} else {
-        console.log('KEYSPACE created');
-    }
-})
-client.execute('CREATE TABLE IF NOT EXISTS stock.hist (symbol varchar, date varchar, open varchar,low varchar,high varchar,close varchar,volume varchar,AdjClose varchar,PRIMARY KEY (symbol,date));',function(err){
-    if (err){console.log(err)} else {
-        console.log('Table created');
-    }
-})
+// client.execute("CREATE KEYSPACE IF NOT EXISTS stock WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };",function(err){
+//     if (err){console.log(err)} else {
+//         console.log('KEYSPACE created');
+//     }
+// })
+// client.execute('CREATE TABLE IF NOT EXISTS stock.hist (symbol varchar, date varchar, open varchar,low varchar,high varchar,close varchar,volume varchar,AdjClose varchar,PRIMARY KEY (symbol,date));',function(err){
+//     if (err){console.log(err)} else {
+//         console.log('Table created');
+//     }
+// })
 
 var queries=[];
 for (var i = 0; i < stockIds.length; i++){
@@ -33,8 +33,9 @@ for (var i = 0; i < stockIds.length; i++){
     }
 }
 
-var queryOptions = { consistency: cassandra.types.consistencies.quorum,prepare : true};
-client.batch(queries, queryOptions, function(err) {
+// var queryOptions = { consistency: cassandra.types.consistencies.local_quorum,prepare : true};
+client.batch(queries, {prepare : true}, function(err) {
     assert.ifError(err);
     console.log('Data updated on cluster');
+    process.exit(code=0);
 });
