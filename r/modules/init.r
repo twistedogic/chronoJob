@@ -10,5 +10,5 @@ install.packages('http://cran.r-project.org/src/contrib/Archive/fPortfolio/fPort
 library(devtools)
 install_github('rhochreiter/financeR')
 install.packages(c('rredis'), repos='http://cran.rstudio.com/')
-install.packages(c('rjson','statmod','RCurl','bitops','httr'), repos='http://cran.rstudio.com/')
+install.packages(c('rjson','statmod','RCurl','bitops','httr','plyr','RJSONIO'), repos='http://cran.rstudio.com/')
 install.packages("h2o", repos="http://h2o-release.s3.amazonaws.com/h2o/rel-mirzakhani/2/R")
