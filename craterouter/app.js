@@ -1,6 +1,6 @@
 var moment = require('moment');
 var crate = require('cratejs');
-var crateIP = process.argv[2] || '192.168.100.78';
+var crateIP = process.argv[2] || '10.0.0.125';
 var db = new crate({
   host: crateIP,
   port: 4200
