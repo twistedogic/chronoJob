@@ -1,3 +1,4 @@
+var moment = require('moment');
 var crate = require('cratejs');
 var crateIP = process.argv[2] || '192.168.100.78';
 var db = new crate({
@@ -72,6 +73,7 @@ app.get('/api/hist/asc/:stockId', function(req, res) {
         // .limit(1)
         .order('unix', 'asc');
     getData.run(function(err, resp) {
+        console.log(resp);
         var csv = resp.cols.join(',');
         if(resp.rows.length > 0){
             for (var i = 0; i < resp.rows.length; i++){
@@ -89,17 +91,16 @@ app.get('/api/hist/asc/:stockId', function(req, res) {
 app.get('/api/ta/desc/:stockId', function(req, res) {
     
     var stockId = req.params.stockId;
-    var getData = db.Select('ta')
-        .where({
-            symbol: stockId
-        })
-        // .limit(1)
-        .order('unix', 'desc');
-    getData.run(function(err, resp) {
-        var csv = resp.cols.join(',');;
-        if(resp.rows.length > 0){
+    var getData = db.Query('SELECT * FROM ta where symbol = ? order by date desc');
+    getData.execute([stockId], function(err, resp) {
+        if(!err && resp.rows.length > 0){
+            var csv = resp.cols.join(',');
+            var search = csv.split(',date,')[0];
+            var pos = search.split(',').length;
+            var data = resp.rows;
             for (var i = 0; i < resp.rows.length; i++){
-                csv = csv + '\n' + resp.rows[i].join(',');
+               data[i][pos] = moment(resp.rows[i][pos]).format("YYYY-MM-DD");
+               csv = csv + '\n' + data[i].join(',');
             }
             res.contentType('csv');
             res.send(csv);
