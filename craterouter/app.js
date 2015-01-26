@@ -174,28 +174,6 @@ app.post('/api/ta/json/:stockId', function(req, res) {
     });
 });
 
-app.get('/api/query/', function(req, res) {
-    
-    var query = req.body;
-    // var getData = db.Query('SELECT * FROM ta where symbol = ? order by date asc');
-    // getData.execute([stockId], function(err, resp) {
-    //     if(!err && resp.rows.length > 0){
-    //         var csv = resp.cols.join(',');
-    //         var search = csv.split(',date,')[0];
-    //         var pos = search.split(',').length;
-    //         var data = resp.rows;
-    //         for (var i = 0; i < resp.rows.length; i++){
-    //           data[i][pos] = moment(resp.rows[i][pos]).format("YYYY-MM-DD");
-    //           csv = csv + '\n' + data[i].join(',');
-    //         }
-    //         res.contentType('csv');
-    //         res.send(csv);
-    //     } else {
-    //         res.json({message:'record not found'});
-    //     }
-    // });
-    
-});
 // START THE SERVER
 // =============================================================================
 app.listen(port);

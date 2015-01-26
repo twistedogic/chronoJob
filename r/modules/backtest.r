@@ -37,6 +37,7 @@ stock <- paste(stock,'TA',sep='')
 data <- get(stock)
 data <- na.omit(data)
 # Step 2: Create your indicator
+daychange <- data$Close - data$Open
 perf <- data$change
 price <- data$Close
 rsi <- data$rsi
