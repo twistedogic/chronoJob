@@ -9,6 +9,7 @@ var request = require('request');
 var express = require('express');        // call express
 var app = express();                 // define our app using express
 var bodyParser = require('body-parser');
+var morgan = require('morgan');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -17,6 +18,9 @@ app.use(bodyParser.urlencoded({
     limit: '50mb'
 }));
 app.use(bodyParser.json({limit: '50mb'}));
+
+//logger
+app.use(morgan('tiny'));
 
 var port = 3000;        // set our port
 
@@ -88,7 +92,7 @@ app.get('/api/hist/asc/:stockId', function(req, res) {
     
 });
 
-app.get('/api/ta/desc/:stockId', function(req, res) {
+app.get('/api/ta/py/desc/:stockId', function(req, res) {
     
     var stockId = req.params.stockId;
     var getData = db.Query('SELECT * FROM ta where symbol = ? order by date desc');
@@ -111,7 +115,7 @@ app.get('/api/ta/desc/:stockId', function(req, res) {
     
 });
 
-app.get('/api/ta/asc/:stockId', function(req, res) {
+app.get('/api/ta/py/asc/:stockId', function(req, res) {
     
     var stockId = req.params.stockId;
     var getData = db.Query('SELECT * FROM ta where symbol = ? order by date asc');
@@ -132,6 +136,42 @@ app.get('/api/ta/asc/:stockId', function(req, res) {
         }
     });
     
+});
+
+app.get('/api/ta/r/:stockId', function(req, res) {
+    
+    var stockId = req.params.stockId;
+    request.post({
+        url:'http://10.0.0.114:8004/ocpu/github/twistedogic/TAA/R/TAA', 
+        json: {"id":stockId,"endPoint":"http://10.0.0.114:3000/api/hist/desc/"}
+    }, function(err,resp,body){
+        if(err){
+            res.json({message:'record not found'});
+            console.log(err);
+        } else {
+            var data = body.split('\n');
+            var check = body.split('ocpu').length;
+            if(check > 1){
+                var dataurl = resp.headers.location + 'R/.val/csv';
+                console.log(dataurl);
+                request(dataurl,function(err,resp,body){
+                    if(err){
+                        console.log(err);
+                        res.json({message:'R error'});
+                    } else {
+                        var csv = body.split('\n');
+                        var header = csv[0].split('coredata.');
+                        csv[0] = header.join('');
+                        csv = csv.join('\n');
+                        res.contentType('csv');
+                        res.send(csv);
+                    }
+                })
+            } else {
+                res.json({message:'R error'});
+            }
+        }
+    }) 
 });
 
 app.get('/api/news/tc/:stockId', function(req, res) {
