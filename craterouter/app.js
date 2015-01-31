@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json({limit: '50mb'}));
 
-var port = process.env.PORT || 3000;        // set our port
+var port = 3000;        // set our port
 
 // ROUTES FOR OUR API
 // =============================================================================
