@@ -1,3 +1,6 @@
+var crate = require('node-crate');
+var crateIP = process.argv[2] || '10.0.0.125';
+crate.connect(crateIP, 4200);
 var fs = require('fs');
 var YQL = require('yql');
 var allStock = fs.readFileSync('../bluechip','utf8');
@@ -46,7 +49,7 @@ for (var i = 0; i < stockIds.length; i++){
                     var colspan = JSON.stringify(data[j]).split('colspan');
                     if (colspan.length < 2){
                         var value = JSON.stringify(data[j]).split(':');
-                        value = value[value.length - 1].replace(/(,|\}|"|\(|\)|%| |'|\/|  )/g, '');
+                        value = value[value.length - 1].replace(/(,|\}|"|\(|\)|%| |'|\/|  |&)/g, '');
                         info.push(value);
                     }
                 }
@@ -54,7 +57,7 @@ for (var i = 0; i < stockIds.length; i++){
                 var header = info.length/(year + 1);
                 var csv = 'symbol,' + info[0];
                 for (var l = 1; l < header; l++){
-                    csv = csv + ',' + info[l*(year + 1)];
+                    csv = csv + ',' + info[l*(year + 1)].replace(/(-)/g,'');
                 }
                 for (var k = 1; k < year + 1; k++){
                     var row = symbol + ',' +info[k];
@@ -63,8 +66,21 @@ for (var i = 0; i < stockIds.length; i++){
                     }
                     csv = csv + '\n' + row;
                 }
-                fs.writeFileSync(__dirname + '/info/' + symbol.split('.')[0] + info[0] + '.csv',csv);
+                var db = info[0].split('-')[0];
+                var json = {};
+                row = csv.split('\n');
+                row[0] = row[0].replace(info[0],'year');
+                header = row[0].split(',');
+                for (var j = 1;j < row.length;j++){
+                    var col = row[j].split(',');
+                    for (var z = 0;z < header.length; z++){
+                        json[header[z]] = col[z];
+                    }
+                    delete json["Others"];
+                    crate.insert(db, json).success(console.log).error(console.error);
+                }
                 console.log(symbol);
+                console.log(db);
             }
         });
     }

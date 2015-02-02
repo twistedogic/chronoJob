@@ -52,7 +52,7 @@ app.get('/api/hist/desc/:stockId', function(req, res) {
         // .limit(1)
         .order('unix', 'desc');
     getData.run(function(err, resp) {
-        var csv = resp.cols.join(',');;
+        var csv = resp.cols.join(',');
         if(resp.rows.length > 0){
             for (var i = 0; i < resp.rows.length; i++){
                 csv = csv + '\n' + resp.rows[i].join(',');

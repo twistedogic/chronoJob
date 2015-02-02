@@ -144,4 +144,131 @@
  maxidx float,
  ATR float,
  TRANGE float
- ) with (number_of_replicas = 2)
+ ) with (number_of_replicas = 2);
+ 
+ CREATE TABLE BalanceSheet (
+  symbol string primary key,
+  year long primary key,
+  FixedAssets float,
+  Investments float,
+  CurrentAssets float,
+  OtherAssets float,
+  TotalAssets float,
+  LongTermDebt float,
+  OtherLongTermLiabilities float,
+  CurrentLiabilities float,
+  ShareCapital float,
+  Reserves float,
+  Equity float,
+  Currency string,
+  Unit string,
+  MajorItems float,
+  Inventory float,
+  CashOnHand float,
+  ShortTermDebt float,
+  TotalDebt float,
+  AuditorsOpinion float
+) with (number_of_replicas = 2);
+
+CREATE TABLE ProfitLoss (
+  symbol string primary key,
+  year long primary key,
+  Turnover float,
+  OperatingProfit float,
+  ExceptionalItems float,
+  Associates float,
+  OtherNonOperatingGainsLosses float,
+  ProfitBeforeTaxation float,
+  Taxation float,
+  MinorityInterests float,
+  NetProfit float,
+  Currency string,
+  Unit string,
+  Depreciation string,
+  InterestPaid float,
+  InterestCapitalized float,
+  NoncurrentAssetsRevaluationDisposal float,
+  TaxationRate float,
+  TurnoverGrowth float,
+  NetProfitGrowth float,
+  AuditorsOpinion float
+) with (number_of_replicas = 2);
+
+CREATE TABLE CashFlow (
+  symbol string primary key,
+  year long primary key,
+  NetCashFlowfromOperatingActivities float,
+  NetCashFlowfromReturnonInvestmentsServicingofFinance float,
+  InterestReceived float,
+  InterestPaid float,
+  DividendReceived float,
+  DividendPaid float,
+  TaxesPaidRefunded float,
+  NetCashFlowfromInvestingActivities float,
+  AdditionstoFixedAssets float,
+  DisposalofFixedAssets float,
+  IncreaseinInvestments float,
+  DecreaseinInvestments float,
+  NetCashFlowwithRelatedParties float,
+  NetCashFlowbeforeFinancingActivities float,
+  NetCashFlowfromFinancingActivities float,
+  NewLoans float,
+  LoansRepayment float,
+  FixedIncomeDebtInstruments float,
+  RepaymentofFixedIncomeDebtInstruments float,
+  EquityFinancing float,
+  IncreaseDecreaseinCashCashEquivalents float,
+  CashCashEquivalentsatBeginningofYear float,
+  NetCashFlowduetoChangeinExchangeRateOthers float,
+  CashCashEquivalentsatEndofYear float,
+  Currency string,
+  Unit string,
+  AuditorsOpinion float
+) with (number_of_replicas = 2);
+
+CREATE TABLE FinancialRatios (
+  symbol string primary key,
+  year long primary key,
+  CurrentRatioX float,
+  QuickRatioX float,
+  LongTermDebtEquity float,
+  TotalDebtEquity float,
+  TotalDebtCapitalEmployed float,
+  ReturnonEquity float,
+  ReturnonCapitalEmploy float,
+  ReturnonTotalAssets float,
+  OperatingProfitMargin float,
+  PretaxProfitMargin float,
+  NetProfitMargin float,
+  InventoryTurnoverX float,
+  DividendPayout float,
+  FiscalYearHigh float,
+  FiscalYearLow float,
+  FiscalYearPERRangeHighX float,
+  FiscalYearPERRangeLowX float,
+  FiscalYearYieldRangeHigh float,
+  FiscalYearYieldRangeLow float
+) with (number_of_replicas = 2);
+
+CREATE TABLE EarningsSummary (
+  symbol string primary key,
+  year long primary key,
+  NetProfitMn float,
+  NetProfitGrowth float,
+  EarningsPerShare float,
+  EPSGrowth float,
+  DividendPerShare float,
+  PEX float,
+  Yield float,
+  DividendPayout float,
+  NAV float,
+  Currency string,
+  CurrencyCstringsion float
+) with (number_of_replicas = 2);
+
+CREATE TABLE news (
+  symbol string primary key,
+  unix long primary key,
+  time string,
+  news string
+) with (number_of_replicas = 2);

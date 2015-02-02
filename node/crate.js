@@ -1,5 +1,5 @@
 var crate = require('node-crate');
-var crateIP = process.argv[2];
+var crateIP = process.argv[2] || '10.0.0.125';
 crate.connect(crateIP, 4200);
 // var scheme = 'create table stockHist (symbol string primary key, date string, unix long primary key, open float, high float, low float, close float, volume long, adj float) with (number_of_replicas = 2)';
 // crate.execute(scheme).success(console.log).error(console.error);
@@ -13,6 +13,20 @@ var stockIds = [];
 for (var i = 0; i < lines.length; i++){
   stockIds.push(lines[i].split('_')[0]);
 }
+// ALL
+// function pad(n, width, z) {
+//   z = z || '0';
+//   n = n + '';
+//   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+// }
+
+// for (var i = 0; i < 9999; i++){
+//   var temp = [];
+//   temp.push(pad(i,4));
+//   temp.push('HK');
+//   temp = temp.join('.');
+//   stockIds.push(temp);
+// }
 
 for (var i = 0; i < stockIds.length; i++){
 var url = 'http://finance.yahoo.com/_td_charts_api/resource/charts;gmtz=8;indicators=quote;range=2y;rangeSelected=undefined;ticker=' + stockIds[i];
@@ -36,7 +50,7 @@ var url = 'http://finance.yahoo.com/_td_charts_api/resource/charts;gmtz=8;indica
 			for (var j = 0; j < time.length; j++){
 				var value = {
 					symbol: symbol,
-					date: moment.unix(time[j]).zone('+0800').format("YYYY-MM-DD"),
+					date: moment.unix(time[j]).utcOffset('+0800').format("YYYY-MM-DD"),
 					unix: time[j],
 					open: open[j],
 					high: high[j],
