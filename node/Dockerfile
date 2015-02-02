@@ -1,5 +1,5 @@
 FROM dockerfile/nodejs
 MAINTAINER Jordan Li 
-ADD . /app
+ADD . /data
 RUN npm install
 CMD ["node","app.js"]
