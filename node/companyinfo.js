@@ -1,9 +1,8 @@
-var fs = require('fs');
-var YQL = require('yql');
-var moment = require('moment');
 var crate = require('node-crate');
 var crateIP = process.argv[2] || '10.0.0.125';
 crate.connect(crateIP, 4200);
+var fs = require('fs');
+var YQL = require('yql');
 var allStock = fs.readFileSync('../bluechip','utf8');
 var lines = allStock.split('\n');
 var stockIds = [];
@@ -12,98 +11,77 @@ for (var i = 0; i < lines.length; i++){
   stockIds.push(lines[i].split('_')[0].split('.')[0]);
 }
 
-var stockIds = ['0001'];
-
-// console.log('Scraping...');
-var base_aaurl = 'http://www.aastocks.com/en/stocks/news/aamm/';
-var sessions = [
-    'price-risen',
-    'price-dropped',
-    'block-traded',
-    'price-fluctuated'
+var baseurl = [
+    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=4&symbol=',
+    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=5&symbol=',
+    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=6&symbol=',
+    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=7&symbol=',
+    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=8&symbol='
     ];
-var xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "newstime2", " " ))] | //*[contains(concat( " ", @class, " " ), concat( " ", "h6", " " ))]';
-for (var i = 1; i < sessions.length; i++){
-    var query = new YQL('select * from html where url="' + base_aaurl + sessions[i] + '" and xpath=' + "'" + xpath + "'");
-    query.exec(function (error, response) {
-        if(!error){
-            var data = response.query.results;
-            for (var j = 0; j < data.div.length; j++){
-                var json = {
-                    "symbol":data.a[j].content.split('(')[1].split(')')[0],
-                    "time":data.div[j].p,
-                    "unix":moment(data.div[j].p).unix(),
-                    "news":data.a[j].content            
-                }
-                crate.insert('news', json).success(console.log).error(console.error);
-            }
-        }
-    });
-}
-for (var i = 0; i < stockIds.length;i++){
-    var base_aaurl, query, xpath;
-        base_aaurl = "http://www.aastocks.com/tc/stocks/analysis/stock-aafn/" + stockIds[i] + "/0/all/1";
-        xpath = '//*[contains(concat( \" \", @class, \" \" ), concat( \" \", \"h6\", \" \" ))] | //*[contains(concat( " ", @class, " " ), concat( " ", "newstime2", " " ))] | //*[contains(concat( " ", @class, " " ), concat( " ", "pad4", " " ))]';
-        query = new YQL("select * from html where url=\"" + base_aaurl + "\" and xpath=" + "'" + xpath + "'");
-        query.exec(function(error, response) {
-            if (!error) {
-                var data = response.query.results;
-                var time = [];
-                var unix = [];
-                for (var j = 1; j < data.div.length; j++){
-                    var test = data.div[j].p;
-                    test = test.split(' ');
-                    var timestring = test[test.length - 1];
-                    if (moment(timestring).isValid()){
-                        var utime = moment(timestring).unix();
-                        time.push(timestring);
-                        unix.push(utime);
+var css = [
+    '//*[(@id = "FR")]//td',
+    '//*[(@id = "PL")]//td',
+    '//*[(@id = "CF")]//td',
+    '//*[(@id = "BS")]//td',
+    '//*[(@id = "ES")]//td'
+    ];
+
+for (var i = 0; i < stockIds.length; i++){    
+    var stock = stockIds[i];
+    for (var m = 0; m < baseurl.length; m++){
+        var url = baseurl[m] + stock;
+        var xpath = css[m] + '| //*[contains(concat( " ", @class, " " ), concat( " ", "font12a_white", " " ))]';
+        var query = new YQL('select * from html where url="' + url + '" and xpath=' + "'" + xpath + "'");
+        query.exec(function (error, response) {
+            if(!error){
+                var data = response.query.results.td;
+                var symbol = response.query.results.a.content;
+                var info = [];
+                var year = 0;
+                var head = 0;
+                for (var j = 0; j < data.length; j++){
+                    if (data[j].id == 'H'){
+                        year++;
+                    }
+                    if (data[j].class == 't_H2'){
+                        head++;
+                    }
+                    var colspan = JSON.stringify(data[j]).split('colspan');
+                    if (colspan.length < 2){
+                        var value = JSON.stringify(data[j]).split(':');
+                        value = value[value.length - 1].replace(/(,|\}|"|\(|\)|%| |'|\/|  |&)/g, '');
+                        info.push(value);
                     }
                 }
-                var symbol = data.div[0].p.split('(')[1].split(')')[0];
-                console.log(symbol + '-tc');    
-                for (var j = 0; j < data.a.length; j++){
-                    var json = {    
-                        "symbol":symbol,
-                        "time":time[j],
-                        "unix":unix[j],
-                        "news":data.a[j].content.replace(/(,|\n|\m| )/g, '')                
-                    }
-                    crate.insert('news', json).success(console.log).error(console.error);
-                }    
-            }
-        });
-    
-    var base_aaurl, query, xpath;
-        base_aaurl = "http://www.aastocks.com/en/stocks/analysis/stock-aafn/" + stockIds[i] + "/0/all/1";
-        xpath = '//*[contains(concat( \" \", @class, \" \" ), concat( \" \", \"h6\", \" \" ))] | //*[contains(concat( " ", @class, " " ), concat( " ", "newstime2", " " ))] | //*[contains(concat( " ", @class, " " ), concat( " ", "pad4", " " ))]';
-        query = new YQL("select * from html where url=\"" + base_aaurl + "\" and xpath=" + "'" + xpath + "'");
-        query.exec(function(error, response) {
-            if (!error) {
-                var data = response.query.results;
-                var time = [];
-                var unix = [];
-                for (var j = 1; j < data.div.length; j++){
-                    var test = data.div[j].p;
-                    test = test.split(' ');
-                    var timestring = test[test.length - 1];
-                    if (moment(timestring).isValid()){
-                        var utime = moment(timestring).unix();
-                        time.push(timestring);
-                        unix.push(utime);
-                    }
+                year = year / (head - year);
+                var header = info.length/(year + 1);
+                var csv = 'symbol,' + info[0];
+                for (var l = 1; l < header; l++){
+                    csv = csv + ',' + info[l*(year + 1)].replace(/(-)/g,'');
                 }
-                var symbol = data.div[0].p.split('(')[1].split(')')[0];
-                console.log(symbol + '-en');    
-                for (var j = 0; j < data.a.length; j++){ 
-                    var json = {      
-                        "symbol":symbol,
-                        "time":time[j],
-                        "unix":unix[j],
-                        "news":data.a[j].content.replace(/(,|\n|\m| )/g, '')                
+                for (var k = 1; k < year + 1; k++){
+                    var row = symbol + ',' +info[k];
+                    for (var l = 1; l < header; l++){
+                        row = row + ',' + info[k + l*(year + 1)];
                     }
-                    crate.insert('news', json).success(console.log).error(console.error);
-                }    
+                    csv = csv + '\n' + row;
+                }
+                var db = info[0].split('-')[0];
+                var json = {};
+                row = csv.split('\n');
+                row[0] = row[0].replace(info[0],'year');
+                header = row[0].split(',');
+                for (var j = 1;j < row.length;j++){
+                    var col = row[j].split(',');
+                    for (var z = 0;z < header.length; z++){
+                        json[header[z]] = col[z];
+                    }
+                    delete json["Others"];
+                    crate.insert(db, json).success(console.log).error(console.error);
+                }
+                console.log(symbol);
+                console.log(db);
             }
         });
+    }
 }
