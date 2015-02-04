@@ -1,6 +1,6 @@
 library('xts')
 parseTAData <- function(stockId) {
-  url <- paste('http://10.0.0.114:3000/api/ta/desc/',stockId,sep='')
+  url <- paste('http://10.0.0.114:3000/api/ta/py/desc/',stockId,sep='')
   res <- read.csv(url)
   tf <- as.xts(res,order.by=as.Date(res$date),unique=T)
   return(tf)
