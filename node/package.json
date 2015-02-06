@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "cheerio": "^0.18.0",
+    "cloudant": "^1.0.0-beta3",
     "cratejs": "^0.2.13",
     "mailgun-js": "^0.6.3",
     "moment": "^2.8.3",
