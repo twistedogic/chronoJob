@@ -1,6 +1,10 @@
 library('xts')
+library('TSA')
+library('stats')
+library('forecast')
+library('GeneCycle')
 parseTAData <- function(stockId) {
-  url <- paste('http://10.0.0.114:3000/api/ta/py/desc/',stockId,sep='')
+  url <- paste('http://api-twistedogic01.rhcloud.com/api/hist/',stockId,sep='')
   res <- read.csv(url)
   tf <- as.xts(res,order.by=as.Date(res$date),unique=T)
   return(tf)

@@ -3,6 +3,7 @@ var YQL = require('yql');
 var moment = require('moment');
 var cheerio = require('cheerio');
 var request = require('request');
+var md5 = require('MD5');
 
 var stockIds = '00001';
 var base_aaurl, query, xpath;
@@ -34,13 +35,15 @@ query.exec(function(error, response) {
             	var json = {    
             	    "symbol":symbol,
             	    "time":time[j],
-            	    "unix":unix[j],
-            	    "heading":data.a[j].content.replace(/(,|\n|\m| )/g, ''),
-            	    "news": redirect
+            	    "data":{
+            	        "unix":unix[j],
+            	        "heading":data.a[j].content.replace(/(,|\n|\m| )/g, ''),
+            	        "news": redirect
+            	    }
             	}
                 console.log('pdf');
             } else {
-                console.log(redirect);
+                // console.log(redirect);
                 request('http://www.aastocks.com' + redirect,function(err,res,body){
                     var symbol = res.req.path;
                 	$ = cheerio.load(body);
@@ -48,7 +51,10 @@ query.exec(function(error, response) {
                 	var heading = $('#lblSTitle').text();
                 	var time = $('#spanDateTime').text();
                 	var news = $('p').text();
-                	console.log(symbol + '\n' + heading + '\n' + time + '\n' + news); 
+                	var unixt = moment(time).unix();
+                	console.log(md5(heading + time));
+                	console.log(heading);
+                // 	console.log(symbol + '\n' + heading + '\n' + time + '\n' + news);
                 })
             }
             // request()

@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "MD5": "^1.2.1",
     "cheerio": "^0.18.0",
     "cloudant": "^1.0.0-beta3",
     "cratejs": "^0.2.13",

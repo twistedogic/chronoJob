@@ -12,3 +12,5 @@ install_github('rhochreiter/financeR')
 install.packages(c('rredis','RMySQL','shiny','opencpu'), repos='http://cran.rstudio.com/')
 install.packages(c('rjson','statmod','RCurl','bitops','httr','plyr','RJSONIO'), repos='http://cran.rstudio.com/')
 install.packages("h2o", repos="http://h2o-release.s3.amazonaws.com/h2o/rel-mirzakhani/2/R")
+
+install.packages(c('dlm','GeneCycle','TSA','signal','fftw','forecast'), repos='http://cran.rstudio.com/')
