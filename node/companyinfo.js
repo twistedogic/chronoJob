@@ -1,11 +1,15 @@
-var crate = require('node-crate');
-var crateIP = process.argv[2] || '10.0.0.125';
-crate.connect(crateIP, 4200);
 var fs = require('fs');
-var YQL = require('yql');
 var request = require('request');
+var redis = require('redis');
+var redisHost = process.argv[2] || '172.17.8.101';
+var client = redis.createClient(6379, redisHost, {})
+var fileUrl = process.argv[3] || 'https://raw.githubusercontent.com/twistedogic/chronoJob/master/bluechip';
 
-var fileUrl = process.argv[3] || 'http://10.0.0.114/bluechip'
+function pad(n, width, z) {
+  z = z || '0';
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
 
 request(fileUrl,function(err,res,body){
     if (!err){
@@ -17,83 +21,35 @@ setTimeout(function(){
 	var allStock = fs.readFileSync(__dirname + '/target','utf8');
 	var lines = allStock.split('\n');
 	var stockIds = [];
-	
 	for (var i = 0; i < lines.length; i++){
-	  stockIds.push(lines[i].split('_')[0].split('.')[0]);
+		var stock = lines[i].split('_')[0].split('.')[0];
+		stock = pad(stock,5);
+		stockIds.push(stock);
 	}
-	
-	var baseurl = [
-	    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=4&symbol=',
-	    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=5&symbol=',
-	    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=6&symbol=',
-	    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=7&symbol=',
-	    'http://www.aastocks.com/en/Stock/CompanyFundamental.aspx?CFType=8&symbol='
-	    ];
-	var css = [
-	    '//*[(@id = "FR")]//td',
-	    '//*[(@id = "PL")]//td',
-	    '//*[(@id = "CF")]//td',
-	    '//*[(@id = "BS")]//td',
-	    '//*[(@id = "ES")]//td'
-	    ];
-	
-	for (var i = 0; i < stockIds.length; i++){    
-	    var stock = stockIds[i];
-	    for (var m = 0; m < baseurl.length; m++){
-	        var url = baseurl[m] + stock;
-	        var xpath = css[m] + '| //*[contains(concat( " ", @class, " " ), concat( " ", "font12a_white", " " ))]';
-	        var query = new YQL('select * from html where url="' + url + '" and xpath=' + "'" + xpath + "'");
-	        query.exec(function (error, response) {
-	            if(!error){
-	                var data = response.query.results.td;
-	                var symbol = response.query.results.a.content;
-	                var info = [];
-	                var year = 0;
-	                var head = 0;
-	                for (var j = 0; j < data.length; j++){
-	                    if (data[j].id == 'H'){
-	                        year++;
-	                    }
-	                    if (data[j].class == 't_H2'){
-	                        head++;
-	                    }
-	                    var colspan = JSON.stringify(data[j]).split('colspan');
-	                    if (colspan.length < 2){
-	                        var value = JSON.stringify(data[j]).split(':');
-	                        value = value[value.length - 1].replace(/(,|\}|"|\(|\)|%| |'|\/|  |&)/g, '');
-	                        info.push(value);
-	                    }
-	                }
-	                year = year / (head - year);
-	                var header = info.length/(year + 1);
-	                var csv = 'symbol,' + info[0];
-	                for (var l = 1; l < header; l++){
-	                    csv = csv + ',' + info[l*(year + 1)].replace(/(-)/g,'');
-	                }
-	                for (var k = 1; k < year + 1; k++){
-	                    var row = symbol + ',' +info[k];
-	                    for (var l = 1; l < header; l++){
-	                        row = row + ',' + info[k + l*(year + 1)];
-	                    }
-	                    csv = csv + '\n' + row;
-	                }
-	                var db = info[0].split('-')[0];
-	                var json = {};
-	                row = csv.split('\n');
-	                row[0] = row[0].replace(info[0],'year');
-	                header = row[0].split(',');
-	                for (var j = 1;j < row.length;j++){
-	                    var col = row[j].split(',');
-	                    for (var z = 0;z < header.length; z++){
-	                        json[header[z]] = col[z];
-	                    }
-	                    delete json["Others"];
-	                    crate.insert(db, json).success(console.log).error(console.error);
-	                }
-	                console.log(symbol);
-	                console.log(db);
-	            }
-	        });
-	    }
-	}
+// 	console.log(stockIds[0]);
+// 	var stockIds = ['00001']; //test
+	var baseurl = 'https://api.investtab.com/api/quote/';
+	var options = [
+	':HK/financial-ratios',
+	':HK/balance-sheet',
+	':HK/cashflow-statement',
+	':HK/income-statement',
+	':HK/earnings-summary',
+	':HK/dividend-history',
+	':HK/fundamentals'
+// 	':HK/info'
+	];
+	for (var i = stockIds.length - 1; i >= 0; i--) {
+		for (var j = options.length - 1; j >= 0; j--) {
+			var url = baseurl + stockIds[i] + options[j];
+			request(url,function(err,res,body){
+			    if(!err){
+			        var name = res.req.path;
+			        name = name.split('/');
+			        var key = name[3].split(':')[0] + name[4];
+			        client.set(key,body);
+			    }
+			});
+		};
+	};
 },10000);
