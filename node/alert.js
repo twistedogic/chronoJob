@@ -1,6 +1,6 @@
 var hipchat = require('node-hipchat');
-
-var HC = new hipchat('hip chat API');
+var apiKey = process.argv[2];
+var HC = new hipchat(apiKey);
 
 var params = {
   room: 'Alert', // Found in the JSON response from the call above

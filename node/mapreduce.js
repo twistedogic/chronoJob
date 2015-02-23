@@ -9,7 +9,7 @@ var db = Cloudant.use("stock");
 var request = require('request');
 var fs = require('fs');
 
-var fileUrl = process.argv[4] || 'http://10.0.0.114/bluechip'
+var fileUrl = process.argv[4] || 'https://raw.githubusercontent.com/twistedogic/chronoJob/master/bluechip'
 // db.get('_design/symbol_indexer',function(error,response){
 // 			db.destroy('_design/symbol_indexer',response._rev,function(error,response){
 request(fileUrl,function(err,res,body){

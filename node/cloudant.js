@@ -9,7 +9,7 @@ var db = Cloudant.use("stock");
 var request = require('request');
 var moment = require('moment');
 var fs = require('fs');
-var fileUrl = process.argv[4] || 'http://10.0.0.114/bluechip'
+var fileUrl = process.argv[4] || 'https://raw.githubusercontent.com/twistedogic/chronoJob/master/bluechip'
 
 console.log(cred);
 request(fileUrl,function(err,res,body){
