@@ -2,10 +2,10 @@ var fs = require('fs');
 var request = require('request');
 var redis = require('redis');
 var PouchDB = require('pouchdb');
-var db = new PouchDB('dbname');
+var db = new PouchDB('companyinfo');
 // var redisHost = process.argv[2] || '172.17.8.101';
 // var client = redis.createClient(6379, redisHost, {})
-var fileUrl = process.argv[3] || 'https://raw.githubusercontent.com/twistedogic/chronoJob/master/bluechip';
+var fileUrl = process.argv[2] || 'https://raw.githubusercontent.com/twistedogic/chronoJob/master/bluechip';
 
 function pad(n, width, z) {
   z = z || '0';
@@ -49,7 +49,13 @@ setTimeout(function(){
 			        var name = res.req.path;
 			        name = name.split('/');
 			        var key = name[3].split(':')[0] + name[4];
-			        client.set(key,body,redis.print);
+			        var doc = {
+			            _id:key,
+			            data: body
+			        };
+			        db.put(doc).then(function(response) {
+			            console.log(response);
+			        })
 			    }
 			});
 		};
