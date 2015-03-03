@@ -22,7 +22,7 @@ for (var i = 0; i < blue.length; i++) {
     json[symbol] = {
         "map":{
             "TICK":symbol,
-            "APIVARREPLACE_SUPERMANSPECIAL_TARGET_NODE_VAR":"www.etnet.com.hk"
+            "APIVARREPLACE_SUPERMANSPECIAL_TARGET_NODE_VAR":"www.etnet.com.hk" //https://api.investtab.com/api/quote/$TICK:HK/realtime-quote
         }
     };
 }
