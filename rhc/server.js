@@ -48,7 +48,9 @@ app.get('/api/hist/:stockId', function(req, res) {
 	        var csv = "symbol,date,open,high,low,close,volume";
 	        for(var i = 0;i < result.rows.length; i++){
 	            var ohlc = data[i].value;
-	            csv = csv + '\n' + symbol + ',' + data[i].key + ',' + ohlc.open + ',' + ohlc.high + ',' + ohlc.low + ',' + ohlc.close + ',' + ohlc.volume;  
+	            if (ohlc.open != null && ohlc.high != null && ohlc.low != null && ohlc.close != null && ohlc.volume != null){
+	                csv = csv + '\n' + symbol + ',' + data[i].key + ',' + ohlc.open + ',' + ohlc.high + ',' + ohlc.low + ',' + ohlc.close + ',' + ohlc.volume;
+	            }
 	        }
 	        res.contentType('csv');
             res.send(csv);

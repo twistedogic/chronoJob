@@ -26,13 +26,12 @@ TradingStrategy <- function(stock,mktdata){
   return (tradingreturns)
 }
 
-RunIterativeStrategy <- function(stockId){
+RunIterativeStrategy <- function(stockId,StartDate,EndDate){
   #This function will run the TradingStrategy
   #It will iterate over a given set of input variables
   #In this case we try lots of different periods for the moving average
   firstRun <- TRUE
-  StartDate = as.Date("2010-01-01")
-  EndDate = Sys.Date()
+  
   for(i in 1:length(stockId)) {
     stock <- stockId[i]
     mktdata <- get(stock)
@@ -98,22 +97,29 @@ SelectTopNStrategies <- function(returns,performanceTable,metric,n){
   return (topNMetrics)
 }
 
-FindOptimumStrategy <- function(stockId){
+FindOptimumStrategy <- function(stockId,StartDate,EndDate){
   #Optimise the strategy
-  trainingReturns <- RunIterativeStrategy(stockId)
+  trainingReturns <- RunIterativeStrategy(stockId,StartDate,EndDate)
   pTab <- PerformanceTable(trainingReturns)
   toptrainingReturns <- SelectTopNStrategies(trainingReturns,pTab,"SharpeRatio",10)
   charts.PerformanceSummary(toptrainingReturns,main=paste(nameOfStrategy,"- Training"),geometric=FALSE)
   return (pTab)
 }
 
-#Download the data
 
-StartDate = as.Date("2010-01-01")
-EndDate = Sys.Date()
+low <- 9999999
+for(i in 1:length(stockId)) {
+  cur <- nrow(get(stockId[i]))
+  if (cur < low){
+    low <- cur
+    lowest <- stockId[i]
+    StartDate <- as.Date(first(index(get(stockId[i]))))
+    EndDate <- as.Date(last(index(get(stockId[i]))))
+  }
+}
 # outofSampleStartDate = as.Date("2010-01-02")
-pTab <- FindOptimumStrategy(stockId) #pTab is the performance table of the various parameters tested
-write.csv(pTab,file=paste(path,'/chronoJob/report/benchmark.csv',sep=''))
+pTab <- FindOptimumStrategy(stockId,StartDate,EndDate) #pTab is the performance table of the various parameters tested
+write.csv(pTab,file=paste(path,'/chronoJob/benchmark.csv',sep=''))
 #Test out of sample
 # dev.new()
 #Manually specify the parameter that we want to trade here, just because a strategy is at the top of

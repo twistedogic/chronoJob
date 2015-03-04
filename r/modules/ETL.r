@@ -25,7 +25,7 @@ for (i in 1:nrow(stockList)){
 }
 for (i in 1:length(stockId)){
     stockData <- parseData(stockId[i])
-    assign(stockId[i],na.omit(stockData))
+    assign(stockId[i],stockData)
 }
 # assign(paste(stock,'TA',sep=''),na.omit(data))
 

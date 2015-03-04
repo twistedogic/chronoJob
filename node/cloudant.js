@@ -46,23 +46,24 @@ setTimeout(function(){
 				console.log(symbol);
 				var json = [];
 				for (var j = 0; j < time.length; j++){
-					var value = {
-					    _id: symbol + time[j],
-					    type: 'hist',
-						symbol: symbol,
-						date: moment.unix(time[j]).utcOffset('+0800').format("YYYY-MM-DD"),
-						unix: time[j],
-						data:{
-						    open: open[j],
-    						high: high[j],
-    						low: low[j],
-    						close: close[j],
-    						volume: volume[j],
-    						adj: adj[j]
-						}
-						
-					};
-					json.push(value);
+				    if (close[j] != null){
+    					var value = {
+    					    _id: symbol + time[j],
+    					    type: 'hist',
+    						symbol: symbol,
+    						date: moment.unix(time[j]).utcOffset('+0800').format("YYYY-MM-DD"),
+    						unix: time[j],
+    						data:{
+    						    open: open[j],
+        						high: high[j],
+        						low: low[j],
+        						close: close[j],
+        						volume: volume[j],
+        						adj: adj[j]
+    						}
+    					};
+    					json.push(value);
+				    }
 				}
 				var docs={docs:json};
 				db.bulk(docs,function(err,res){
