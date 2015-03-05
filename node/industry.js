@@ -3,7 +3,9 @@ var request = require('request');
 var PouchDB = require('pouchdb');
 var db = new PouchDB('companyinfo');
 var fileUrl = process.argv[3] || 'https://raw.githubusercontent.com/twistedogic/chronoJob/master/bluechip';
-
+// var redis = require('redis');
+// var redisHost = process.argv[2] || '10.0.0.114';
+// var client = redis.createClient(6379, redisHost, {});
 function pad(n, width, z) {
   z = z || '0';
   n = n + '';
@@ -40,7 +42,7 @@ setTimeout(function(){
 			        var info = ['sector', 'industry', 'sub_industry'];
 			        for (var k = 0; k < info.length; k++) {
 			            var json = data[info[k]];
-			            key.push(json.name.en.replace(/(,|\n|\m| | )/g, '_'));
+			            key.push(json.name.en.replace(/(,| | )/g, '_'));
 			            var list = json.symbols;
 			            for (var m = 0; m < list.length; m++) {
 			                var tick = list[m].split(':')
@@ -60,7 +62,8 @@ setTimeout(function(){
 			            };
 			            db.put(doc).then(function(res){
 			                console.log(res);
-			            })
+			            });
+			         //   client.set(key[k],value[k]);
 			        }
 			    }
 			});
