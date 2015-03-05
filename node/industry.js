@@ -40,7 +40,7 @@ setTimeout(function(){
 			        var info = ['sector', 'industry', 'sub_industry'];
 			        for (var k = 0; k < info.length; k++) {
 			            var json = data[info[k]];
-			            key.push(json.name.en.replace(/(,|\n|\m| | )/g, ''));
+			            key.push(json.name.en.replace(/(,|\n|\m| | )/g, '_'));
 			            var list = json.symbols;
 			            for (var m = 0; m < list.length; m++) {
 			                var tick = list[m].split(':')
@@ -53,7 +53,10 @@ setTimeout(function(){
 			        for (var k = 0; k < key.length; k++) {
 			            var doc = {
 			                _id: key[k],
-			                symbols: value[k]
+			                data: {
+			                    name: key[k],
+			                    symbols: value[k]
+			                }
 			            };
 			            db.put(doc).then(function(res){
 			                console.log(res);
