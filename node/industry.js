@@ -1,8 +1,16 @@
 var fs = require('fs');
 var request = require('request');
-var PouchDB = require('pouchdb');
-var db = new PouchDB('companyinfo');
-var fileUrl = process.argv[3] || 'https://raw.githubusercontent.com/twistedogic/chronoJob/master/bluechip';
+// var PouchDB = require('pouchdb');
+// var db = new PouchDB('companyinfo');
+var fileUrl = process.argv[4] || 'https://raw.githubusercontent.com/twistedogic/chronoJob/master/bluechip';
+var me = process.argv[2]; // Set this to your own account
+var password = process.argv[3];
+var cred = {
+    account:me,
+    password:password
+};
+var Cloudant = require('cloudant')(cred);
+var db = Cloudant.use("companyinfo");
 // var redis = require('redis');
 // var redisHost = process.argv[2] || '10.0.0.114';
 // var client = redis.createClient(6379, redisHost, {});
@@ -60,9 +68,16 @@ setTimeout(function(){
 			                    symbols: value[k]
 			                }
 			            };
-			            db.put(doc).then(function(res){
-			                console.log(res);
-			            });
+			         //   db.put(doc).then(function(res){
+			         //       console.log(res);
+			         //   });
+			            db.insert(doc, function (er, result) {
+                			if (er){
+                				console.log('conflict');
+                			} else {
+                				console.log('Created design document with symbol index')
+                			}
+                		})
 			         //   client.set(key[k],value[k]);
 			        }
 			    }

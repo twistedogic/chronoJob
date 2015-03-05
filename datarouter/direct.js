@@ -1,3 +1,11 @@
+var me = process.argv[2] || process.env.CUSER; // Set this to your own account
+var password = process.argv[3] || process.env.PASS;
+var cred = {
+    account:me,
+    password:password
+};
+var Cloudant = require('cloudant')(cred);
+var db = Cloudant.use('companyinfo');
 var express = require('express');        // call express
 var app = express();                 // define our app using express
 var bodyParser = require('body-parser');
@@ -101,7 +109,14 @@ app.get('/api/ta/r/:stockId', function(req, res) {
 app.get('/api/sector/:sector', function(req, res) {
     var sector = req.params.sector;
     db.get(sector,function(err,resp){
-        var data = resp;
+        if(!err){
+            var data = resp.data.symbols;
+            data = data.join('\n');
+            res.contentType('csv');
+            res.send(data);
+        } else {
+            res.json({message:'Not found'});
+        }
     })
 });
 
