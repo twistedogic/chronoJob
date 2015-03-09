@@ -15,7 +15,7 @@ for (i in 1:length(stockId)){
   tatitle <- c(tatitle,c('change'))
   rsi <- RSI(CL) #rsi
   tatitle <- c(tatitle,c('rsi'))
-  sto <- stoch(HLC, nFastK = 14, nFastD = 3, nSlowD = 3, maType = 'EMA') * 100 #FastK,FastD,SlowD
+  sto <- stoch(HLC, nFastK = 14, nFastD = 3, nSlowD = 3, maType = 'SMA') * 100 #FastK,FastD,SlowD
   tatitle <- c(tatitle,names(sto))
   smi <- SMI(HLC, n = 13, nFast = 2, nSlow = 25, nSig = 9) #smi,smiSignal
   tatitle <- c(tatitle,c('smi','smiSignal'))

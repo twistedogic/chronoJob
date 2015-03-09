@@ -81,6 +81,7 @@ app.get('/api/ta/r/:stockId', function(req, res) {
             console.log(err);
         } else {
             var data = body.split('\n');
+            console.log(data);
             var check = body.split('ocpu').length;
             if(check > 1){
                 var dataurl = resp.headers.location + 'R/.val/csv';
@@ -88,7 +89,7 @@ app.get('/api/ta/r/:stockId', function(req, res) {
                 request(dataurl,function(err,resp,body){
                     if(err){
                         console.log(err);
-                        res.json({message:'R error'});
+                        res.json({message:'no return'});
                     } else {
                         var csv = body.split('\n');
                         var header = csv[0].split('coredata.');

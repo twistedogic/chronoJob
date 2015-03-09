@@ -45,7 +45,7 @@ RunIterativeStrategy <- function(stockId,StartDate,EndDate){
       results <- cbind(results,runResult)
     }
   }
-  
+  results[is.na(results)] <- 0
   return(results)
 }
 
@@ -119,7 +119,7 @@ for(i in 1:length(stockId)) {
 }
 # outofSampleStartDate = as.Date("2010-01-02")
 pTab <- FindOptimumStrategy(stockId,StartDate,EndDate) #pTab is the performance table of the various parameters tested
-write.csv(pTab,file=paste(path,'/chronoJob/benchmark.csv',sep=''))
+write.csv(na.omit(pTab),file=paste(path,'/chronoJob/benchmark.csv',sep=''))
 #Test out of sample
 # dev.new()
 #Manually specify the parameter that we want to trade here, just because a strategy is at the top of
