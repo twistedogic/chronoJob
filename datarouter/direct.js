@@ -39,31 +39,30 @@ app.get('/', function(req, res) {
 // all of our routes will be prefixed with /api
 app.get('/api/hist/:stockId', function(req, res) {
     var stockId = req.params.stockId;
-    var url = 'http://finance.yahoo.com/_td_charts_api/resource/charts;gmtz=8;indicators=quote;range=2y;rangeSelected=undefined;ticker=' + stockId;
+    stockId = stockId.split('.')[0];
     request({
-        url: url
+        url: 'https://api.investtab.com/api/quote/0' + stockId + ':HK/historical-prices'
     }, function (err, resp, body) {
         if (err) { return cb(err); }
         if (resp.statusCode == 200){
-            var body = JSON.parse(body);
-            var data = body.data;
-            var symbol = data.meta.symbol;
-            var time = data.timestamp;
-            var ohlc = data.indicators.quote[0];
-            var open = ohlc.open;
-            var high = ohlc.high;
-            var low = ohlc.low;
-            var close = ohlc.close;
-            var volume = ohlc.volume;
-            console.log(symbol);
-            var output = 'Symbol,Date,Open,High,Low,Close,Volume';
-            for (var j = 0; j < time.length; j++){
-                if (open[j] !== null && high[j] !== null && low[j] !== null && close[j] !== null && volume[j] !== null){
-                    output = output + '\n' + symbol + ',' + moment.unix(time[j]).zone('+0800').format("YYYY-MM-DD") + ',' + open[j] + ',' + high[j] + ',' + low[j] + ',' + close[j] + ',' + volume[j];
+            var data = JSON.parse(body);
+            if(data.s == "ok"){
+                var o = data.o;
+                var h = data.h;
+                var l = data.l;
+                var c = data.c;
+                var t = data.t;
+                var v = data.v;
+                var symbol = stockId;
+                var output = 'Symbol,Date,Open,High,Low,Close,Volume';
+                for (var j = 0; j < t.length; j++){
+                    output = output + '\n' + symbol + ',' + moment.unix(t[j]).zone('+0800').format("YYYY-MM-DD") + ',' + o[j] + ',' + h[j] + ',' + l[j] + ',' + c[j] + ',' + v[j];
                 }
+                res.contentType('csv');
+                res.send(output);
+            } else {
+                res.json({message:'fail to download '+ stockId});
             }
-            res.contentType('csv');
-            res.send(output);
         } else {
             res.json({message:'fail to download '+ stockId});
         }

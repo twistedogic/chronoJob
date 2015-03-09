@@ -4,21 +4,22 @@ require("xts")
 require("fPortfolio")
 start.time <- Sys.time()
 stock <- stockId[1]
-data <- last(get(stock),30)
-dataset <- ROC(Cl(data))
 timerange <- paste(StartDate,'/',EndDate, sep = '')
+data <- get(stock)[timerange]
+dataset <- ROC(Cl(data))
 for (i in 2:length(stockId)){
     stock <- stockId[i]
-    data <- last(get(stock),30)
+    data <- get(stock)[timerange]
     dataset <- merge(dataset, ROC(Cl(data)))
 }
 names(dataset) <- stockId
-data <- na.omit(dataset)
+data <- dataset
+data[is.na(data)] <- 0
 scenarios <- dim(data)[1]
 assets <- dim(data)[2]
 data_ts <- as.timeSeries(data)
 spec <- portfolioSpec()
-# setSolver(spec) <- "solveRquadprog"
+setSolver(spec) <- "solveRquadprog"
 setNFrontierPoints(spec) <- length(stockId)
 constraints <- c("LongOnly")
 portfolioConstraints(data_ts, spec, constraints)
