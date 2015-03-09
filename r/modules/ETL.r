@@ -17,16 +17,25 @@ library(tools)
 # getSymbols(stockId)
 # setwd(path)
 # source(paste(path,'/chronoJob/r/modules/db.r',sep=''))
+path <- getwd()
 source(paste(path,'/chronoJob/r/modules/dataproxy.r',sep=''))
+
 stockId <- character()
-stockList <- read.csv(paste(path,'/chronoJob/bluechip',sep=''),header=FALSE)
+stockList <- read.csv(paste('http://api-twistedogic01.rhcloud.com/api/sector/Financials'),header=FALSE)
 for (i in 1:nrow(stockList)){
     stockId[i] <- unlist(strsplit(as.character(stockList[i,]),"_"))[1]
 }
+updatestockId <- character()
 for (i in 1:length(stockId)){
     stockData <- parseData(stockId[i])
-    assign(stockId[i],stockData)
+    if(!is.null(stockData) && nrow(stockData) > 30){
+      if(last(index(stockData)) == Sys.Date()){
+        assign(stockId[i],stockData)
+        updatestockId <- c(updatestockId,stockId[i])
+      }
+    } 
 }
+stockId <- updatestockId
 # assign(paste(stock,'TA',sep=''),na.omit(data))
 
 print('ETL Complete')
