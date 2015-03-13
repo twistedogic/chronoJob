@@ -13,6 +13,7 @@
     "cheerio": "^0.18.0",
     "cloudant": "^1.0.0-beta3",
     "cratejs": "^0.2.13",
+    "is_js": "^0.7.1",
     "mailgun-js": "^0.6.3",
     "moment": "^2.8.3",
     "node-crate": "^1.0.20",

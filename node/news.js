@@ -5,7 +5,7 @@ var cheerio = require('cheerio');
 var request = require('request');
 var md5 = require('MD5');
 
-var fileUrl = process.argv[3] || 'https://raw.githubusercontent.com/twistedogic/chronoJob/master/indList'
+var fileUrl = process.argv[3] || 'https://raw.githubusercontent.com/twistedogic/chronoJob/master/list/indList'
 
 request(fileUrl,function(err,res,body){
     if (!err){
