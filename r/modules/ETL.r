@@ -30,10 +30,8 @@ for (i in 1:length(stockId)){
     print(stockId[i])
     stockData <- parseData(stockId[i])
     if(!is.null(stockData) && nrow(stockData) > 30){
-      if(last(index(stockData)) == Sys.Date()){
-        assign(stockId[i],stockData)
-        updatestockId <- c(updatestockId,stockId[i])
-      }
+      assign(stockId[i],stockData)
+      updatestockId <- c(updatestockId,stockId[i])
     } 
 }
 stockId <- updatestockId
