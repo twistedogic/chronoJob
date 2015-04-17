@@ -1,11 +1,5 @@
-var me = process.argv[2]; // Set this to your own account
-var password = process.argv[3];
-var cred = {
-    account:me,
-    password:password
-};
-var Cloudant = require('cloudant')(cred);
-var db = Cloudant.use('companyinfo');
+var PouchDB = require('pouchdb');
+var db = new PouchDB('companyinfo');
 var fs = require('fs');
 var options = [
     'financial-ratios',

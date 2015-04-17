@@ -1,9 +1,6 @@
-var fs = require('fs');
 var request = require('request');
 var PouchDB = require('pouchdb');
-var db = new PouchDB('test/companyinfo');
-// var redisHost = process.argv[2] || '172.17.8.101';
-// var client = redis.createClient(6379, redisHost, {})
+var db = new PouchDB('info');
 var fileUrl = process.argv[2] || 'https://raw.githubusercontent.com/twistedogic/chronoJob/master/list/bluechip';
 
 function pad(n, width, z) {
@@ -56,5 +53,3 @@ request(fileUrl,function(err,res,body){
         };
     }
 });
-
-

@@ -1,5 +1,4 @@
 var PouchDB = require('pouchdb');
-PouchDB.plugin(require('pouchdb-upsert'));
 var db = new PouchDB('companyinfo');
 
 var target = [
