@@ -1,6 +1,7 @@
 var PouchDB = require('pouchdb');
-var db = new PouchDB('companyinfo');
-var fs = require('fs');
+var _ = require('lodash');
+var is = require('is_js');
+var db = new PouchDB('http://10.0.0.114:5984/companyinfo');
 var options = [
     'financial-ratios',
 	'balance-sheet',
@@ -15,10 +16,14 @@ Array.prototype.move = function(from,to){
     return this;
 };
 //0-4
-db.query('companyinfo2/' + options[0]).then(function (res) {
+db.query('info/' + options[0]).then(function (res) {
     var data = res.rows;
-    var json = JSON.parse(data[0].key);
-    console.log(json);
-}).catch(function (err) {
+    for (var i = data.length - 1; i >= 0; i--) {
+        var info = JSON.parse(data[i].key);
+        for (var m = 0; m < info.length; m++) {
+            console.log(info[m].cover_period);
+        }
+    }
+}).catch(function(err){
     console.log(err);
-});
+})

@@ -1,5 +1,5 @@
 var PouchDB = require('pouchdb');
-var db = new PouchDB('companyinfo');
+var db = new PouchDB('http://10.0.0.114:5984/companyinfo');
 
 var target = [
     'financial-ratios',
@@ -17,7 +17,7 @@ for (var i = 0;i < target.length;i++){
     }
 }
 var ddoc = {
-    _id: '_design/companyinfo2',
+    _id: '_design/info',
     views: view_function
 };
 // save it

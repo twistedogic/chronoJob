@@ -11,7 +11,7 @@
   "dependencies": {
     "cheerio": "^0.18.0",
     "cratejs": "^0.2.13",
-    "is_js": "^0.7.1",
+    "is_js": "^0.7.3",
     "lodash": "^3.6.0",
     "mailgun-js": "^0.6.3",
     "moment": "^2.8.3",

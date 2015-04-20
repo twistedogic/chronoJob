@@ -1,7 +1,7 @@
 var fs = require('fs');
 var request = require('request');
 var PouchDB = require('pouchdb');
-var db = new PouchDB('companyinfo');
+var db = new PouchDB('http://10.0.0.114:5984/industry');
 var fileUrl = process.argv[2] || 'https://raw.githubusercontent.com/twistedogic/chronoJob/master/list/bluechip';
 function pad(n, width, z) {
 	z = z || '0';
