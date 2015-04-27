@@ -2,7 +2,7 @@ var PouchDB = require('pouchdb');
 var request = require('request');
 var _ = require('lodash');
 var is = require('is_js');
-var industry = new PouchDB('http://10.0.0.114:5984/industry');
+var all = new PouchDB('http://10.0.0.114:5984/all');
 var companyinfo = new PouchDB('http://10.0.0.114:5984/companyinfo');
 function pad(n, width, z) {
   z = z || '0';
@@ -10,26 +10,22 @@ function pad(n, width, z) {
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
-industry.allDocs({include_docs: true}).then(function (res) {
+all.allDocs({include_docs: true}).then(function (res) {
     var data = res.rows;
     var stockId = [];
     for (var i = data.length - 1; i >= 0; i--) {
         stockId = stockId.concat(data[i].doc.data.symbols);
     }
     var stockId = _.uniq(stockId);
-    for (var i = 0; i < stockId.length; i++) {
-        var stock = stockId[i].split('.')[0];
-        stockId[i] = pad(stock,5);
-    }
     var baseurl = 'https://api.investtab.com/api/quote/';
     var options = [
-    ':HK/financial-ratios',
-    ':HK/balance-sheet',
-    ':HK/cashflow-statement',
-    ':HK/income-statement',
-    ':HK/earnings-summary',
-    ':HK/dividend-history',
-    ':HK/fundamentals'
+    '/financial-ratios',
+    '/balance-sheet',
+    '/cashflow-statement',
+    '/income-statement',
+    '/earnings-summary',
+    '/dividend-history',
+    '/fundamentals'
     ];
     for (var i = stockId.length - 1; i >= 0; i--) {
         for (var j = options.length - 1; j >= 0; j--) {

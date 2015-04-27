@@ -7,13 +7,13 @@ var target = [
 	'cashflow-statement',
 	'income-statement',
 	'earnings-summary',
-// 	'dividend-history',
+	'dividend-history',
 	'fundamentals'
 	];
 var view_function={};
 for (var i = 0;i < target.length;i++){
     view_function[target[i]] = {
-        map:"function (doc){if(doc._id.indexOf('" + target[i] + "') > -1){emit(doc.data)}}"
+        map:"function (doc){if(doc._id.indexOf('" + target[i] + "') > -1){emit(doc)}}"
     }
 }
 var ddoc = {

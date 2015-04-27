@@ -219,14 +219,14 @@ function symbolWrapper(input,callback){
     async.map(methods, technical, function(err,result){
         var output = {
             symbol:symbol,
-            // date: date,
-            // data:{
-            //     close:close,
-            //     open:open,
-            //     low:low,
-            //     high:high,
-            //     volume:volume
-            // },
+            date: date.slice(0,10),
+            data:{
+                close:close.slice(0,10),
+                open:open.slice(0,10),
+                low:low.slice(0,10),
+                high:high.slice(0,10),
+                volume:volume.slice(0,10)
+            },
             result:result
         }
         callback(null,output);
@@ -249,7 +249,7 @@ async.map(urilist,getData,function(err,result){
                         var keys = Object.keys(results[j].data);
                         var values = results[j].data;
                         for (var m = 0; m < keys.length; m++) {
-                            json[results[j].taName + keys[m]] = values[keys[m]].slice(0,10);
+                            json[results[j].taName + keys[m]] = values[keys[m]].slice(0,2);
                         }
                     }
                     data[i].result = json;
