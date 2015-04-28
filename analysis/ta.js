@@ -5,7 +5,7 @@ var request = require('request');
 var fs = require('fs');
 
 var list = [
-    '0001','0002','0003','0004'
+    '0005'
 ];
 var urilist = [];
 for (var i = 0; i < list.length; i++) {
@@ -219,14 +219,14 @@ function symbolWrapper(input,callback){
     async.map(methods, technical, function(err,result){
         var output = {
             symbol:symbol,
-            date: date.slice(0,10),
-            data:{
-                close:close.slice(0,10),
-                open:open.slice(0,10),
-                low:low.slice(0,10),
-                high:high.slice(0,10),
-                volume:volume.slice(0,10)
-            },
+            // date: date.slice(0,10),
+            // data:{
+            //     close:close.slice(0,10),
+            //     open:open.slice(0,10),
+            //     low:low.slice(0,10),
+            //     high:high.slice(0,10),
+            //     volume:volume.slice(0,10)
+            // },
             result:result
         }
         callback(null,output);

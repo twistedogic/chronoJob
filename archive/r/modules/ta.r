@@ -19,7 +19,7 @@ for (i in 1:length(stockId)){
   tatitle <- c(tatitle,names(sto))
   smi <- SMI(HLC, n = 13, nFast = 2, nSlow = 25, nSig = 9) #smi,smiSignal
   tatitle <- c(tatitle,c('smi','smiSignal'))
-  macd <- MACD(CL, nFast = 12, nSlow = 26, nSig = 9) * 100 #macd,macdSignal
+  macd <- MACD(CL, nFast = 12, nSlow = 26, nSig = 9)#macd,macdSignal
   tatitle <- c(tatitle,c('macd','macdSignal'))
   bbands <- BBands(HLC) #Lower,Middle,Upper,ptcB
   tatitle <- c(tatitle,c('Lower','Middle','Upper','ptcB'))
