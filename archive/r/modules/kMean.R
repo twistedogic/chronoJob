@@ -1,6 +1,0 @@
-library(h2o)
-path <- getwd()
-localH2O = h2o.init(ip = "localhost", port = 54321)
-stock.hex = h2o.importFile(localH2O, path = paste(path,'/chronoJob/companyinfo.csv',sep=''), key = "stock.hex")
-#gap_stat <- h2o.gapStatistic(data = stock.hex, K = 10, B = 100, boot_frac = .1, cols=2:18)
-stock.km <- h2o.kmeans(data = stock.hex[,2:18], centers = 6, init = "furthest")
