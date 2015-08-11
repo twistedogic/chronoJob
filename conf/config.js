@@ -10,7 +10,7 @@ module.exports = {
         action:"ajax",
         type:"getCSV",
         ucode:null,
-        date_from:null,
+        date_form:null,
         date_to:null,
         page:null
     }

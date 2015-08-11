@@ -20,14 +20,14 @@ describe("utility",function(){
     it("create option url",function(){
         var expect = {
             soe:[
-                "http://www.hkex.com.hk/eng/sorc/market_data/stock_options_exercised.aspx?action=ajax&type=getCSV&ucode=00001&date_from=2012%2F1%2F1&date_to=2015%2F8%2F10&page=3",
-                "http://www.hkex.com.hk/eng/sorc/market_data/stock_options_exercised.aspx?action=ajax&type=getCSV&ucode=00001&date_from=2012%2F1%2F1&date_to=2015%2F8%2F10&page=2",
-                "http://www.hkex.com.hk/eng/sorc/market_data/stock_options_exercised.aspx?action=ajax&type=getCSV&ucode=00001&date_from=2012%2F1%2F1&date_to=2015%2F8%2F10&page=1"
+                "http://www.hkex.com.hk/eng/sorc/market_data/stock_options_exercised.aspx?action=ajax&type=getCSV&ucode=00001&date_form=2012%2F1%2F1&date_to=2015%2F8%2F10&page=3&ordering=",
+                "http://www.hkex.com.hk/eng/sorc/market_data/stock_options_exercised.aspx?action=ajax&type=getCSV&ucode=00001&date_form=2012%2F1%2F1&date_to=2015%2F8%2F10&page=2&ordering=",
+                "http://www.hkex.com.hk/eng/sorc/market_data/stock_options_exercised.aspx?action=ajax&type=getCSV&ucode=00001&date_form=2012%2F1%2F1&date_to=2015%2F8%2F10&page=1&ordering="
             ],
             pcr:[
-                "http://www.hkex.com.hk/eng/sorc/market_data/statistics_putcall_ratio.aspx?action=ajax&type=getCSV&ucode=00001&date_from=2012%2F1%2F1&date_to=2015%2F8%2F10&page=3",
-                "http://www.hkex.com.hk/eng/sorc/market_data/statistics_putcall_ratio.aspx?action=ajax&type=getCSV&ucode=00001&date_from=2012%2F1%2F1&date_to=2015%2F8%2F10&page=2",
-                "http://www.hkex.com.hk/eng/sorc/market_data/statistics_putcall_ratio.aspx?action=ajax&type=getCSV&ucode=00001&date_from=2012%2F1%2F1&date_to=2015%2F8%2F10&page=1"
+                "http://www.hkex.com.hk/eng/sorc/market_data/statistics_putcall_ratio.aspx?action=ajax&type=getCSV&ucode=00001&date_form=2012%2F1%2F1&date_to=2015%2F8%2F10&page=3",
+                "http://www.hkex.com.hk/eng/sorc/market_data/statistics_putcall_ratio.aspx?action=ajax&type=getCSV&ucode=00001&date_form=2012%2F1%2F1&date_to=2015%2F8%2F10&page=2",
+                "http://www.hkex.com.hk/eng/sorc/market_data/statistics_putcall_ratio.aspx?action=ajax&type=getCSV&ucode=00001&date_form=2012%2F1%2F1&date_to=2015%2F8%2F10&page=1"
             ]
         };
         assert.equal(JSON.stringify(expect),JSON.stringify(COT({
