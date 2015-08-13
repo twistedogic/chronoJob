@@ -33,14 +33,15 @@ describe("Scrape Data",function(){
             date:["20140101","20150810"],
             page:3
         },function(err,res){
-            if(_.keys(res).length == 2){
+            if(_.isObject(res.soe[0]) && _.isObject(res.pcr[0])){
                 done();
             }
         })
     });
     it("daily options report",function(done){
-        daily("150810",function(err,res){
-            if(res == "done"){
+        this.timeout(10000);
+        daily(["150810","150811"],function(err,res){
+            if(_.isObject(res.dtop[0]) && _.isObject(res.rp[0]) && _.isObject(res.dqe[0])){
                 done();
             }
         })
