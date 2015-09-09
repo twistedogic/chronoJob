@@ -1,4 +1,5 @@
 module.exports = {
+    mongo_ip: process.env.MONGO_IP || "localhost",
     base_url:"https://api.investtab.com/api/quote/",
     report:["financial-ratios","balance-sheet","cashflow-statement","income-statement","earnings-summary","dividend-history","fundamentals"],
     quote:"historical-prices",

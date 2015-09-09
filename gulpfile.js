@@ -4,7 +4,8 @@ var gulp = require('gulp'),
 
 gulp.task('test',function(){
     return gulp.src('./test/*.js',{read:false})
-    .pipe(mocha({reporter: 'nyan'}))
+    // .pipe(mocha({reporter: 'nyan'}))
+    .pipe(mocha())
     .on('error', gutil.log);
 })
 
