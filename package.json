@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/twistedogic/chronoJob",
   "dependencies": {
+    "adm-zip": "^0.4.7",
     "async": "^1.4.0",
     "connect": "^3.4.0",
     "lodash": "^3.10.1",
