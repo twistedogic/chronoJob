@@ -34,7 +34,111 @@ module.exports = {
             }
         }
     },
-    technical:{
-        
-    }
+    technical:[
+		{
+        	methodName:"SMA250",
+            name: "SMA",
+            startIdx: 0,    
+            inReal: "c",
+            optInTimePeriod: 250
+        },
+        {
+            methodName:"SMA100",
+            name: "SMA",
+            startIdx: 0,    
+            inReal: "c",
+            optInTimePeriod: 100
+        },
+        {
+            methodName:"SMA50",
+            name: "SMA",
+            startIdx: 0,    
+            inReal: "c",
+            optInTimePeriod: 50
+        },
+        {
+            methodName:"SMA20",
+            name: "SMA",
+            startIdx: 0,    
+            inReal: "c",
+            optInTimePeriod: 20
+        },
+        {
+            methodName:"SMA10",
+            name: "SMA",
+            startIdx: 0,
+            inReal: "c",
+            optInTimePeriod: 10
+        },
+        {
+            methodName:"MACD",
+            name: "MACD",
+            startIdx: 0,    
+            inReal: "c",
+            optInFastPeriod: 12,
+            optInSlowPeriod: 26,
+            optInSignalPeriod: 9
+        },
+        {
+            methodName:"STOCH",
+            name: "STOCH",
+            startIdx: 0,    
+            high: "h",
+            low: "l",
+            close: "c",
+            optInFastK_Period: 5,
+            optInSlowK_Period: 3,
+            optInSlowK_MAType: 0,
+            optInSlowD_Period: 3,
+            optInSlowD_MAType: 0
+        },
+        {
+            methodName:"RSI",
+            name: "RSI",
+            startIdx: 0,    
+            inReal: "c",
+            optInTimePeriod: 14
+        },
+        {
+            methodName:"ROCP",
+            name: "ROCP",
+            startIdx: 0,    
+            inReal: "c",
+            optInTimePeriod: 10
+        },
+        {
+            methodName:"STDDEV",
+            name: "STDDEV",
+            startIdx: 0,    
+            inReal: "c",
+            optInTimePeriod: 10,
+            optInNbDev:1
+        },
+        {
+            methodName:"MINMAX",
+            name: "MINMAX",
+            startIdx: 0,    
+            inReal: "c",
+            optInTimePeriod: 30
+        },
+        {
+            methodName:"ATR",
+            name: "ATR",
+            startIdx: 0,    
+            high: "h",
+            low: "l",
+            close: "c",
+            optInTimePeriod: 14
+        },
+        {
+            methodName:"BBANDS",
+            name: "BBANDS",
+            startIdx: 0,    
+            inReal: "c",
+            optInTimePeriod: 5,
+            optInNbDevUp: 2,
+            optInNbDevDn: 2,
+            optInMAType: 0
+        }
+    ]
 };
