@@ -1,11 +1,13 @@
 var _ = require('lodash');
 var assert = require('assert');
+var mongoose = require('mongoose');
 var sector = require('../lib/fundamental/sector.js');
 var fundamental = require('../lib/fundamental/fundamental.js');
 var options = require('../lib/options/options.js');
 var daily = require('../lib/options/daily.js');
 var config = require('../conf/config.js');
 var ta = require('../lib/technical/ta.js');
+var mongoWrite = require('../lib/util/mongoWrite.js');
 describe("Scrape Data",function(){
     it("sector, industry, sub_industry",function(done){
         this.timeout(3000);
@@ -58,12 +60,49 @@ describe("Scrape Data",function(){
         assert.doesNotThrow(function(){
             ta(["1","6823"],function(err,res){
                 if(_.isObject(res)){
-                    _.each(res,function(m){
-                        assert.deepEqual(_.keys(m),['_id','data']);
-                    })
+                    assert.deepEqual(_.keys(res[0]),_.keys(res[_.random(res.length)]));
                     done();
                 }
             })
         })
     });
+})
+
+describe("Save Data",function(){
+    before(function (done) {   
+        mongoose.connect('mongodb://' + config.mongo_ip + ':27017/' + config.db_name, function(){
+            mongoose.connection.db.dropDatabase(function(){
+                done();
+            })    
+        })
+    })
+    it("write to mongo",function(done){
+        this.timeout(3000);
+        assert.doesNotThrow(function(){
+            var input = {
+                collection_name:[{
+                    _id: 1,
+                    name:"tom",
+                    gender:"m"
+                },{
+                    _id: 2,
+                    name:"mary",
+                    gender:"f"
+                }]
+            };
+            mongoWrite(input,function(err,res){
+                if(_.isObject(res)){
+                    assert.equal(input[_.keys(input)[0]].length,res.n);
+                    done();
+                }
+            })
+        })
+    });
+    after(function (done) {   
+        mongoose.connect('mongodb://' + config.mongo_ip + ':27017/' + config.db_name, function(){
+            mongoose.connection.db.dropDatabase(function(){
+                done();
+            })    
+        })
+    })
 })
