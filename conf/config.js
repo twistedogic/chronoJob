@@ -1,4 +1,8 @@
 module.exports = {
+    cloudant:{
+        username: process.env.CLOUDANT_USER,
+        password: process.env.CLOUDANT_PASSWORD
+    },
     mongo_ip: process.env.MONGO_IP || "localhost",
     db_name: "stock",
     base_url:"https://api.investtab.com/api/quote/",

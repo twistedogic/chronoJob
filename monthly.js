@@ -6,6 +6,13 @@ var sector = require('./lib/fundamental/sector.js');
 var fundamental = require('./lib/fundamental/fundamental.js');
 var ta = require('./lib/technical/ta.js');
 var mongoWrite = require('./lib/util/mongoWrite.js');
+var cloudantWrite = require('./lib/util/cloudantWrite.js');
+
+var db_option = process.argv[2] || 'mongo';
+var dbWrite = mongoWrite;
+if(db_option == 'cloudant'){
+    dbWrite = cloudantWrite;
+}
 
 var target = symbols.options;
 var mapInput = function(input){
@@ -17,11 +24,12 @@ var mapInput = function(input){
     });
     return arr;
 }
+
 sector(target,function(err,res){
     if(err){
         console.log(err)
     } else {
-        async.map(mapInput(res),mongoWrite,function(err,res){
+        async.map(mapInput(res),dbWrite,function(err,res){
             if(err){
                 console.log('sector: ' + err);
             } else {
@@ -34,12 +42,12 @@ fundamental(target,function(err,res){
     if(err){
         console.log(err)
     } else {
-        async.map(mapInput(res),mongoWrite,function(err,res){
+        async.map(mapInput(res),dbWrite,function(err,res){
             if(err){
                 console.log('fundamental: ' + err);
             } else {
                 console.log('fundamental: ' + JSON.stringify(res));
             }
-        });;
+        });
     }
 })
